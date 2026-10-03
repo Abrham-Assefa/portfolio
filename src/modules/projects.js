@@ -105,7 +105,29 @@ export function openProject(slug, { updateHash = true } = {}) {
 
 export const projectList = projects;
 
+function renderWorkLog() {
+  const el = $('#work-log');
+  if (!el) return;
+  const max = Math.max(...filters.filter((f) => f.id !== 'all').map((f) => projects.filter((p) => p.cats.includes(f.id)).length));
+  const rows = filters.filter((f) => f.id !== 'all').map((f, i) => {
+    const n = projects.filter((p) => p.cats.includes(f.id)).length;
+    return `<button type="button" class="wl-row wl-${f.id}" data-filter="${f.id}" style="--w:${(n / max) * 100}%;--d:${300 + i * 150}ms">
+      <span class="wl-name">${escapeHtml(f.label)}</span><span class="wl-track"><i></i></span><b>${n}</b></button>`;
+  }).join('');
+  el.innerHTML = `
+    <p class="wl-cmd"><span class="wl-p">$</span> ls ./projects --by-domain</p>
+    ${rows}
+    <p class="wl-total"><span class="wl-ok">✓</span> ${projects.length} projects · ${projects.filter((p) => p.featured).length} featured<span class="wl-caret" aria-hidden="true"></span></p>`;
+  el.addEventListener('click', (e) => {
+    const r = e.target.closest('.wl-row');
+    if (!r) return;
+    setFilter(r.dataset.filter);
+    $('.proj-toolbar').scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start' });
+  });
+}
+
 export function initProjects() {
+  renderWorkLog();
   // filter buttons with counts
   const fbar = $('.proj-filter');
   fbar.innerHTML = filters.map((f) => {
