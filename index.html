@@ -1,433 +1,277 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Abrham Assefa — AI & Full-Stack Developer</title>
 <meta name="description" content="Abrham Assefa — AI Engineer, Full-Stack & Mobile Developer based in Verona, Italy. Computer vision, deep learning, and modern web/mobile applications.">
+<meta name="author" content="Abrham Assefa">
+<meta name="keywords" content="Abrham Assefa, AI engineer, computer vision, deep learning, full-stack developer, Flutter, React, Verona">
+<meta name="theme-color" content="#0D131B" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F6F3EC" media="(prefers-color-scheme: light)">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://abrham-assefa.github.io/portfolio/">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Abrham Assefa — AI & Full-Stack Developer">
+<meta property="og:description" content="Computer vision, deep learning, and production web & mobile apps. MSc AI @ University of Verona, ex-INSA full-stack developer.">
+<meta property="og:image" content="https://abrham-assefa.github.io/portfolio/og-image.svg">
+<meta property="og:url" content="https://abrham-assefa.github.io/portfolio/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Abrham Assefa — AI & Full-Stack Developer">
+<meta name="twitter:description" content="Computer vision, deep learning, and production web & mobile apps.">
+<meta name="twitter:image" content="https://abrham-assefa.github.io/portfolio/og-image.svg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Abrham Assefa",
+  "jobTitle": "AI & Full-Stack Developer",
+  "email": "mailto:abrhamassefa759@gmail.com",
+  "address": { "@type": "PostalAddress", "addressLocality": "Verona", "addressCountry": "IT" },
+  "alumniOf": [
+    { "@type": "CollegeOrUniversity", "name": "University of Verona" },
+    { "@type": "CollegeOrUniversity", "name": "Debre Markos University" }
+  ],
+  "sameAs": [
+    "https://github.com/Abrham-Assefa",
+    "https://github.com/abrham-cyper",
+    "https://www.linkedin.com/in/abrham-assefa-1599b1251"
+  ],
+  "knowsAbout": ["Computer Vision", "Deep Learning", "Machine Learning", "Explainable AI", "React", "Node.js", "Flutter"]
+}
+</script>
+
+<!-- set theme before paint to avoid a flash -->
+<script>
+  (function(){
+    try {
+      var t = localStorage.getItem('theme');
+      if (!t) t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      document.documentElement.dataset.theme = t;
+    } catch(e) {}
+    document.documentElement.classList.add('js');
+  })();
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --ink:#0D131B;
-    --ink-2:#141C27;
-    --ink-3:#1B2531;
-    --paper:#ECE7DA;
-    --paper-dim:#9CA3AF;
-    --paper-dimmer:#6B7280;
-    --signal:#FF7A1A;
-    --signal-soft:rgba(255,122,26,0.14);
-    --signal-line:rgba(255,122,26,0.35);
-    --grid-line:rgba(236,231,218,0.07);
-    --mono:'JetBrains Mono',monospace;
-    --sans:'Manrope',sans-serif;
-    --maxw:1180px;
-    --card-shadow:none;
-  }
-  *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    margin:0;
-    background:var(--ink);
-    color:var(--paper);
-    font-family:var(--sans);
-    line-height:1.5;
-    -webkit-font-smoothing:antialiased;
-  }
-  ::selection{background:var(--signal);color:var(--ink);}
-  a{color:inherit;text-decoration:none;}
-  img{max-width:100%;display:block;}
-
-  /* background grid */
-  .bg-grid{
-    position:fixed;inset:0;z-index:0;pointer-events:none;
-    background-image:
-      linear-gradient(var(--grid-line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-    background-size:64px 64px;
-    mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 90%);
-  }
-
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;position:relative;z-index:1;}
-
-  /* ---------- NAV ---------- */
-  header{
-    position:fixed;top:0;left:0;right:0;z-index:50;
-    backdrop-filter:blur(10px);
-    background:rgba(13,19,27,0.75);
-    border-bottom:1px solid var(--grid-line);
-  }
-  .navrow{
-    max-width:var(--maxw);margin:0 auto;padding:16px 28px;
-    display:flex;align-items:center;justify-content:space-between;
-  }
-  .logo{font-family:var(--mono);font-weight:700;font-size:14px;letter-spacing:0.02em;}
-  .logo span{color:var(--signal);}
-  nav ul{list-style:none;display:flex;gap:28px;margin:0;padding:0;}
-  nav a{
-    font-family:var(--mono);font-size:12px;letter-spacing:0.08em;text-transform:uppercase;
-    color:var(--paper-dim);transition:color .2s ease;
-  }
-  nav a:hover{color:var(--signal);}
-  .status-chip{
-    display:flex;align-items:center;gap:8px;
-    font-family:var(--mono);font-size:11px;letter-spacing:0.06em;text-transform:uppercase;
-    color:var(--paper-dim);border:1px solid var(--grid-line);padding:6px 12px;border-radius:100px;
-  }
-  .status-dot{width:6px;height:6px;border-radius:50%;background:#4ADE80;box-shadow:0 0 0 0 rgba(74,222,128,0.5);animation:pulse 2s infinite;}
-  @keyframes pulse{
-    0%{box-shadow:0 0 0 0 rgba(74,222,128,0.5);}
-    70%{box-shadow:0 0 0 6px rgba(74,222,128,0);}
-    100%{box-shadow:0 0 0 0 rgba(74,222,128,0);}
-  }
-  .navmenu-toggle{display:none;background:none;border:1px solid var(--grid-line);color:var(--paper);padding:8px 10px;border-radius:6px;font-family:var(--mono);}
-
-  /* ---------- SECTION LABEL ---------- */
-  .eyebrow{
-    font-family:var(--mono);font-size:12px;letter-spacing:0.14em;text-transform:uppercase;
-    color:var(--signal);display:flex;align-items:center;gap:10px;margin-bottom:18px;
-  }
-  .eyebrow::before{content:'';width:22px;height:1px;background:var(--signal);}
-
-  section{padding:120px 0;position:relative;}
-  .section-head{max-width:640px;margin-bottom:56px;}
-  h2{
-    font-family:var(--sans);font-weight:800;font-size:clamp(28px,4vw,40px);
-    margin:0 0 14px;letter-spacing:-0.02em;
-  }
-  .section-sub{color:var(--paper-dim);font-size:15px;max-width:560px;}
-
-  /* ---------- BOUNDING BOX FRAME (signature element) ---------- */
-  .bbox{position:relative;}
-  .bbox::before,.bbox::after{
-    content:'';position:absolute;width:16px;height:16px;
-    border:2px solid var(--signal);opacity:0;transition:opacity .35s ease, transform .35s ease;
-  }
-  .bbox::before{top:-1px;left:-1px;border-right:none;border-bottom:none;transform:translate(-4px,-4px);}
-  .bbox::after{bottom:-1px;right:-1px;border-left:none;border-top:none;transform:translate(4px,4px);}
-  .bbox:hover::before,.bbox:hover::after,
-  .bbox.active::before,.bbox.active::after{
-    opacity:1;transform:translate(0,0);
-  }
-  .bbox-tag{
-    position:absolute;top:-13px;left:12px;background:var(--signal);color:var(--ink);
-    font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.05em;
-    padding:3px 8px;border-radius:3px;opacity:0;transition:opacity .35s ease;text-transform:uppercase;
-  }
-  .bbox:hover .bbox-tag,.bbox.active .bbox-tag{opacity:1;}
-
-  /* ---------- HERO ---------- */
-  .hero{padding:172px 0 100px;}
-  .hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:56px;align-items:center;}
-  .hero-kicker{
-    font-family:var(--mono);font-size:12px;color:var(--paper-dim);letter-spacing:0.05em;
-    margin-bottom:22px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;
-  }
-  .hero-kicker .pipe{color:var(--signal);}
-  .hero h1{
-    font-family:var(--sans);font-weight:800;font-size:clamp(38px,5.6vw,64px);
-    line-height:1.02;letter-spacing:-0.03em;margin:0 0 20px;
-  }
-  .hero h1 .accent{color:var(--signal);}
-  .role-line{
-    font-family:var(--mono);font-size:clamp(15px,2vw,19px);color:var(--paper-dim);margin-bottom:26px;
-    min-height:26px;
-  }
-  .role-line #typed{color:var(--paper);}
-  .caret{display:inline-block;width:9px;background:var(--signal);margin-left:2px;animation:blink 1s steps(1) infinite;}
-  @keyframes blink{50%{opacity:0;}}
-  .hero-desc{color:var(--paper-dim);font-size:16px;max-width:520px;margin-bottom:36px;}
-  .hero-desc b{color:var(--paper);font-weight:600;}
-  .cta-row{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:52px;}
-  .btn{
-    font-family:var(--mono);font-size:13px;letter-spacing:0.03em;
-    padding:14px 24px;border-radius:6px;display:inline-flex;align-items:center;gap:8px;
-    transition:all .2s ease;border:1px solid transparent;cursor:pointer;
-  }
-  .btn-primary{background:var(--signal);color:var(--ink);font-weight:700;}
-  .btn-primary:hover{background:#ff8c3d;transform:translateY(-2px);}
-  .btn-ghost{border-color:var(--grid-line);color:var(--paper);}
-  .btn-ghost:hover{border-color:var(--signal);color:var(--signal);transform:translateY(-2px);}
-
-  .stat-row{display:flex;gap:0;border-top:1px solid var(--grid-line);padding-top:26px;}
-  .stat{flex:1;padding-right:18px;}
-  .stat b{
-    display:block;font-family:var(--mono);font-size:26px;color:var(--signal);font-weight:700;
-  }
-  .stat span{font-size:12px;color:var(--paper-dim);letter-spacing:0.03em;}
-
-  /* hero visual: annotated face-grid illustration */
-  .hero-visual{position:relative;}
-  .scan-frame{
-    position:relative;aspect-ratio:1/1.08;border-radius:12px;overflow:hidden;
-    background:linear-gradient(160deg,#18212C,#0F151D);
-    border:1px solid rgba(255,255,255,0.06);
-    box-shadow:0 24px 60px -20px rgba(20,24,29,0.35);
-  }
-  .scan-frame svg{width:100%;height:100%;}
-  .scanline{
-    position:absolute;left:0;right:0;height:2px;
-    background:linear-gradient(90deg,transparent,#FF7A1A,transparent);
-    box-shadow:0 0 12px 2px rgba(255,122,26,0.45);
-    animation:scan 3.2s linear infinite;
-  }
-  @keyframes scan{0%{top:4%;}50%{top:94%;}100%{top:4%;}}
-  .float-tag{
-    position:absolute;font-family:var(--mono);font-size:10.5px;background:rgba(13,19,27,0.88);
-    border:1px solid rgba(255,122,26,0.4);color:#ECE7DA;padding:5px 9px;border-radius:4px;
-    backdrop-filter:blur(4px);letter-spacing:0.02em;
-  }
-  .float-tag b{color:#FF7A1A;}
-  .tag-a{top:8%;left:6%;}
-  .tag-b{bottom:10%;right:6%;}
-  .tag-c{top:3%;left:32%;}
-
-  /* ---------- ABOUT ---------- */
-  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;}
-  .about-body p{color:var(--paper-dim);font-size:15.5px;margin:0 0 16px;}
-  .about-body strong{color:var(--paper);}
-  .lang-list{display:flex;flex-direction:column;gap:16px;margin-top:8px;}
-  .lang-item{}
-  .lang-top{display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;margin-bottom:6px;color:var(--paper-dim);}
-  .lang-top b{color:var(--paper);font-weight:600;}
-  .lang-bar{height:4px;background:var(--ink-3);border-radius:2px;overflow:hidden;}
-  .lang-fill{height:100%;background:var(--signal);border-radius:2px;}
-  .info-card{
-    border:1px solid var(--grid-line);border-radius:10px;padding:24px;background:var(--ink-2);
-    box-shadow:var(--card-shadow);
-  }
-  .info-card + .info-card{margin-top:16px;}
-  .info-label{font-family:var(--mono);font-size:11px;color:var(--signal);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;}
-  .info-main{font-weight:700;font-size:16px;margin-bottom:4px;}
-  .info-sub{font-size:13.5px;color:var(--paper-dim);}
-
-  /* ---------- SKILLS ---------- */
-  .skills-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
-  .skill-card{
-    border:1px solid var(--grid-line);border-radius:10px;padding:22px 20px;background:var(--ink-2);
-    position:relative;box-shadow:var(--card-shadow);
-  }
-  .skill-cat{font-family:var(--mono);font-size:11px;color:var(--signal);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:14px;}
-  .skill-tags{display:flex;flex-wrap:wrap;gap:7px;}
-  .skill-tags span{
-    font-family:var(--mono);font-size:11.5px;color:var(--paper-dim);border:1px solid var(--grid-line);
-    padding:5px 9px;border-radius:5px;
-  }
-
-  /* ---------- PROJECTS ---------- */
-  .proj-filter{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:36px;}
-  .fbtn{
-    font-family:var(--mono);font-size:11.5px;letter-spacing:0.04em;text-transform:uppercase;
-    padding:8px 14px;border-radius:100px;border:1px solid var(--grid-line);color:var(--paper-dim);
-    cursor:pointer;background:transparent;transition:all .2s ease;
-  }
-  .fbtn:hover{color:var(--paper);}
-  .fbtn.active{background:var(--signal);color:var(--ink);border-color:var(--signal);font-weight:700;}
-  .proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;}
-  .proj-card{
-    border:1px solid var(--grid-line);border-radius:10px;padding:26px;background:var(--ink-2);
-    display:flex;flex-direction:column;gap:14px;transition:border-color .2s ease, transform .2s ease, box-shadow .2s ease;
-    box-shadow:var(--card-shadow);
-  }
-  .proj-card:hover{transform:translateY(-3px);border-color:var(--signal-line);box-shadow:0 12px 28px rgba(20,24,29,0.09);}
-  .proj-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
-  .proj-class{font-family:var(--mono);font-size:10.5px;color:var(--signal);letter-spacing:0.06em;text-transform:uppercase;}
-  .proj-conf{font-family:var(--mono);font-size:11px;color:var(--paper-dim);border:1px solid var(--grid-line);padding:3px 8px;border-radius:4px;white-space:nowrap;}
-  .proj-title{font-size:18px;font-weight:700;margin:0;}
-  .proj-desc{color:var(--paper-dim);font-size:14px;line-height:1.55;margin:0;}
-  .proj-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px;}
-  .proj-tags span{font-family:var(--mono);font-size:10.5px;color:var(--paper-dim);background:var(--ink-3);padding:4px 8px;border-radius:4px;}
-  .proj-links{display:flex;gap:16px;margin-top:6px;font-family:var(--mono);font-size:12px;}
-  .proj-links a{color:var(--paper);display:flex;align-items:center;gap:6px;transition:color .2s ease;}
-  .proj-links a:hover{color:var(--signal);}
-
-  /* ---------- EXPERIENCE / TIMELINE ---------- */
-  .timeline{border-left:1px solid var(--grid-line);padding-left:34px;display:flex;flex-direction:column;gap:44px;margin-left:6px;}
-  .tl-item{position:relative;}
-  .tl-item::before{
-    content:'';position:absolute;left:-40px;top:4px;width:10px;height:10px;border-radius:50%;
-    background:var(--ink);border:2px solid var(--signal);
-  }
-  .tl-date{font-family:var(--mono);font-size:11.5px;color:var(--signal);letter-spacing:0.05em;margin-bottom:6px;text-transform:uppercase;}
-  .tl-title{font-size:17px;font-weight:700;margin:0 0 6px;}
-  .tl-org{font-size:13.5px;color:var(--paper-dim);margin-bottom:10px;}
-  .tl-desc{font-size:14.5px;color:var(--paper-dim);max-width:600px;}
-
-  /* ---------- CONTACT ---------- */
-  .contact-panel{
-    border:1px solid var(--grid-line);border-radius:14px;background:var(--ink-2);
-    padding:52px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;
-    box-shadow:var(--card-shadow);
-  }
-  .contact-left h2{margin-bottom:12px;}
-  .contact-left p{color:var(--paper-dim);font-size:15px;max-width:420px;}
-  .term{
-    font-family:var(--mono);font-size:13px;background:#12161C;color:#ECE7DA;border-radius:8px;
-    border:1px solid rgba(255,255,255,0.06);padding:18px 20px;line-height:1.9;
-    box-shadow:0 16px 40px -18px rgba(20,24,29,0.4);
-  }
-  .term .prompt{color:#FF7A1A;}
-  .term a{color:#ECE7DA;border-bottom:1px solid rgba(255,255,255,0.18);}
-  .term a:hover{color:#FF7A1A;border-color:#FF7A1A;}
-  .term .cmt{color:#7C8794;}
-
-  footer{padding:36px 0 50px;border-top:1px solid var(--grid-line);}
-  .foot-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
-  .foot-row p{font-family:var(--mono);font-size:11.5px;color:var(--paper-dimmer);margin:0;}
-  .foot-links{display:flex;gap:20px;}
-  .foot-links a{font-family:var(--mono);font-size:11.5px;color:var(--paper-dim);}
-  .foot-links a:hover{color:var(--signal);}
-
-  .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease;}
-  .reveal.in{opacity:1;transform:translateY(0);}
-
-  @media (max-width:900px){
-    .hero-grid{grid-template-columns:1fr;}
-    .hero-visual{order:-1;max-width:340px;margin:0 auto;}
-    .about-grid{grid-template-columns:1fr;gap:36px;}
-    .skills-grid{grid-template-columns:repeat(2,1fr);}
-    .proj-grid{grid-template-columns:1fr;}
-    .contact-panel{grid-template-columns:1fr;padding:32px;}
-    nav ul{display:none;}
-    .status-chip{display:none;}
-  }
-  @media (max-width:520px){
-    .skills-grid{grid-template-columns:1fr;}
-    .stat-row{flex-wrap:wrap;gap:18px;}
-    .stat{flex:1 1 40%;}
-  }
-  @media (prefers-reduced-motion:reduce){
-    *{animation:none !important;transition:none !important;}
-  }
-</style>
+<script type="module" src="/src/main.js"></script>
 </head>
 <body>
 
-<div class="bg-grid"></div>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="scroll-progress" aria-hidden="true"><span></span></div>
+<div class="bg-grid" aria-hidden="true"></div>
+<div class="bg-glow" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"></div>
+<div class="cursor-dot" aria-hidden="true"></div>
 
-<header>
+<header class="site-header">
   <div class="navrow">
-    <div class="logo">ABRHAM<span>.</span>DEV</div>
-    <nav>
+    <a href="#top" class="logo" aria-label="Abrham Assefa — home">ABRHAM<span>.</span>DEV</a>
+    <nav id="primary-nav" aria-label="Primary">
       <ul>
         <li><a href="#about">About</a></li>
         <li><a href="#skills">Skills</a></li>
         <li><a href="#projects">Projects</a></li>
         <li><a href="#experience">Experience</a></li>
+        <li><a href="#github">GitHub</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
-    <div class="status-chip"><span class="status-dot"></span>OPEN TO WORK</div>
+    <div class="nav-actions">
+      <div class="status-chip"><span class="status-dot"></span>OPEN TO WORK</div>
+      <button class="icon-btn palette-trigger" type="button" aria-label="Open command palette (Ctrl+K)" title="Command palette (⌘K)">
+        <kbd>⌘K</kbd>
+      </button>
+      <button class="icon-btn theme-toggle" type="button" aria-label="Toggle color theme" title="Toggle theme">
+        <svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="1.8"/><g stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></g></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="icon-btn navmenu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="primary-nav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
 </header>
 
+<main id="main">
+
 <!-- ================= HERO ================= -->
-<section class="hero">
+<section class="hero" id="top">
+  <canvas class="hero-canvas" aria-hidden="true"></canvas>
   <div class="wrap hero-grid">
-    <div>
-      <div class="hero-kicker">
+    <div class="hero-copy">
+      <div class="hero-kicker reveal">
         <span>VERONA, ITALY</span><span class="pipe">/</span><span>EX-INSA FULL-STACK DEVELOPER</span><span class="pipe">/</span><span>MSc AI, UNIVERSITY OF VERONA</span>
       </div>
-      <h1>Abrham Assefa<br>builds systems that <span class="accent">see, learn</span> &amp; ship.</h1>
-      <div class="role-line">&gt; <span id="typed"></span><span class="caret">&nbsp;</span></div>
-      <p class="hero-desc">Full-Stack Developer with <b>2 years</b> of production experience at Ethiopia's Information Network Security Agency (INSA), now specializing in <b>computer vision &amp; deep learning</b> through an MSc in AI. I take models from research notebook to real interface.</p>
-      <div class="cta-row">
-        <a href="#projects" class="btn btn-primary">View Projects →</a>
-        <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+      <h1 class="reveal">Abrham Assefa<br>builds systems that <span class="accent">see, learn</span> &amp; ship.</h1>
+      <div class="role-line reveal" aria-live="polite">&gt; <span id="typed">AI / Machine Learning Engineer</span><span class="caret" aria-hidden="true">&nbsp;</span></div>
+      <p class="hero-desc reveal">Full-Stack Developer with <b>2 years</b> of production experience at Ethiopia's Information Network Security Agency (INSA), now specializing in <b>computer vision &amp; deep learning</b> through an MSc in AI. I take models from research notebook to real interface.</p>
+      <div class="cta-row reveal">
+        <a href="#projects" class="btn btn-primary magnetic">View Projects <span aria-hidden="true">→</span></a>
+        <a href="#contact" class="btn btn-ghost magnetic">Get in Touch</a>
+        <a href="resume.pdf" class="btn btn-ghost magnetic resume-btn" download hidden>Résumé <span aria-hidden="true">↓</span></a>
       </div>
-      <div class="stat-row">
-        <div class="stat"><b>2+</b><span>Years pro experience</span></div>
-        <div class="stat"><b>99.5%</b><span>Peak model accuracy</span></div>
-        <div class="stat"><b>10+</b><span>Shipped projects</span></div>
-        <div class="stat"><b>40+</b><span>Public repositories</span></div>
+      <div class="stat-row reveal">
+        <div class="stat"><b data-count="2" data-suffix="+">2+</b><span>Years pro experience</span></div>
+        <div class="stat"><b data-count="99.5" data-suffix="%" data-decimals="1">99.5%</b><span>Peak model accuracy</span></div>
+        <div class="stat"><b data-count="10" data-suffix="+">10+</b><span>Shipped projects</span></div>
+        <div class="stat"><b data-count="40" data-suffix="+" id="repo-stat">40+</b><span>Public repositories</span></div>
       </div>
     </div>
 
-    <div class="hero-visual">
-      <div class="scan-frame">
-        <svg viewBox="0 0 400 430" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <div class="hero-visual reveal">
+      <div class="dev-scene" role="img" aria-label="Animated illustration: Abrham coding at his desk late at night, hearts floating up from the screen as the build passes">
+        <svg viewBox="0 0 480 420" aria-hidden="true">
           <defs>
-            <radialGradient id="glow" cx="50%" cy="38%" r="60%">
-              <stop offset="0%" stop-color="#233247"/>
-              <stop offset="100%" stop-color="#141C27"/>
-            </radialGradient>
+            <radialGradient id="ds-glow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="var(--s-k)" stop-opacity=".55"/><stop offset="1" stop-color="var(--s-k)" stop-opacity="0"/></radialGradient>
+            <linearGradient id="ds-cone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFD58A" stop-opacity=".9"/><stop offset="1" stop-color="#FFD58A" stop-opacity="0"/></linearGradient>
+            <clipPath id="ds-sky"><rect x="26" y="40" width="72" height="84" rx="2"/></clipPath>
           </defs>
-          <rect width="400" height="430" fill="url(#glow)"/>
-
-          <!-- ambient grid -->
-          <g stroke="#ECE7DA" stroke-width="0.6" opacity="0.12">
-            <line x1="40" y1="215" x2="360" y2="215"/>
-            <line x1="200" y1="30" x2="200" y2="400"/>
-          </g>
-
-          <!-- AI chip node, bridging web + mobile -->
-          <g transform="translate(200,58)">
-            <rect x="-20" y="-20" width="40" height="40" rx="8" stroke="#FF7A1A" stroke-width="1.4" fill="#141C27"/>
-            <circle cx="0" cy="0" r="7" fill="#FF7A1A"/>
-            <g stroke="#FF7A1A" stroke-width="1.4">
-              <line x1="-20" y1="-8" x2="-28" y2="-8"/>
-              <line x1="-20" y1="8" x2="-28" y2="8"/>
-              <line x1="20" y1="-8" x2="28" y2="-8"/>
-              <line x1="20" y1="8" x2="28" y2="8"/>
-              <line x1="-8" y1="-20" x2="-8" y2="-28"/>
-              <line x1="8" y1="-20" x2="8" y2="-28"/>
-              <line x1="-8" y1="20" x2="-8" y2="28"/>
-              <line x1="8" y1="20" x2="8" y2="28"/>
+          <rect class="s-wall" width="480" height="420"/>
+          <!-- window -->
+          <rect class="s-winframe" x="20" y="34" width="84" height="96" rx="5"/>
+          <g clip-path="url(#ds-sky)">
+            <g class="sky-night">
+              <rect x="26" y="40" width="72" height="84" fill="#16223D"/>
+              <circle cx="76" cy="60" r="10" fill="#F5E9C8"/><circle cx="81" cy="56" r="9" fill="#16223D"/>
+              <circle class="star" cx="38" cy="54" r="1.2"/><circle class="star" cx="56" cy="76" r="1" style="animation-delay:-.8s"/>
+              <circle class="star" cx="86" cy="98" r="1.3" style="animation-delay:-1.6s"/><circle class="star" cx="44" cy="106" r="1" style="animation-delay:-2.2s"/>
+            </g>
+            <g class="sky-day">
+              <rect x="26" y="40" width="72" height="84" fill="#A9DBFA"/>
+              <g class="sun"><circle cx="76" cy="62" r="10" fill="#FFC94D"/><circle cx="76" cy="62" r="15" fill="#FFC94D" opacity=".25"/></g>
+              <g class="cloud"><ellipse cx="44" cy="96" rx="13" ry="6" fill="#fff"/><circle cx="40" cy="91" r="6" fill="#fff"/><circle cx="49" cy="90" r="7" fill="#fff"/></g>
             </g>
           </g>
-
-          <!-- connector lines: AI chip -> browser window & phone -->
-          <g stroke="#FF7A1A" stroke-width="1" stroke-dasharray="3 4" opacity="0.6">
-            <path d="M180 68 Q120 100 105 128" fill="none"/>
-            <path d="M220 68 Q280 120 292 158" fill="none"/>
+          <path class="s-winbar" d="M62 40v84M26 82h72"/>
+          <rect class="s-winframe" x="16" y="128" width="92" height="6" rx="2"/>
+          <!-- poster -->
+          <g class="poster"><rect class="s-poster" x="392" y="22" width="64" height="56" rx="3"/>
+            <text x="424" y="50" text-anchor="middle" class="s-poster-t">&lt;/&gt;</text>
+            <path class="s-heart" d="M424 66c-1-2-6-2-6 2 0 3 4 5 6 7 2-2 6-4 6-7 0-4-5-4-6-2z"/></g>
+          <!-- shelf -->
+          <rect class="s-wood" x="388" y="118" width="80" height="5" rx="1"/>
+          <rect x="396" y="98" width="8" height="20" fill="#5B8DEF"/><rect x="405" y="102" width="7" height="16" fill="var(--s-k)"/><rect x="413" y="96" width="9" height="22" fill="#3FA66B"/>
+          <g class="vine"><rect class="s-pot" x="440" y="104" width="16" height="14" rx="2"/>
+            <path class="s-leaf" d="M444 104c-6 8-2 20-8 30M452 104c4 10 0 18 6 28"/><circle class="s-leafc" cx="437" cy="122" r="3"/><circle class="s-leafc" cx="436" cy="133" r="3"/><circle class="s-leafc" cx="457" cy="122" r="3"/><circle class="s-leafc" cx="458" cy="131" r="3"/></g>
+          <!-- screen glow -->
+          <ellipse class="s-glow" cx="240" cy="160" rx="190" ry="130" fill="url(#ds-glow)"/>
+          <!-- monitor -->
+          <rect class="s-frame" x="108" y="66" width="264" height="180" rx="10"/>
+          <rect class="s-screen" x="116" y="74" width="248" height="160" rx="4"/>
+          <rect class="s-bar" x="116" y="74" width="248" height="14" rx="4"/>
+          <circle cx="126" cy="81" r="2.6" fill="#FF5F57"/><circle cx="135" cy="81" r="2.6" fill="#FEBC2E"/><circle cx="144" cy="81" r="2.6" fill="#28C840"/>
+          <text x="160" y="84" class="s-tab">love.js <tspan class="tk-k">♥</tspan></text>
+          <g id="dev-gutter" class="s-gutter"></g>
+          <g id="dev-code" class="s-code"></g>
+          <rect id="dev-caret" class="s-caret" x="142" y="92" width="5" height="9"/>
+          <rect class="s-bar" x="116" y="222" width="248" height="12"/>
+          <text x="122" y="230.5" class="s-status">⎇ main   ♥ <tspan id="dev-commits">1284</tspan> commits   UTF-8</text>
+          <g id="dev-toast" class="s-toast"><rect x="262" y="222" width="102" height="12" rx="2"/><text x="313" y="230.5" text-anchor="middle">✓ build passed · 0 bugs ♥</text></g>
+          <rect class="sticky" x="346" y="52" width="30" height="26" rx="1"/><text x="361" y="63" text-anchor="middle" class="sticky-t">ship</text><text x="361" y="72" text-anchor="middle" class="sticky-t">it ♥</text>
+          <rect class="s-frame" x="228" y="246" width="24" height="36"/>
+          <rect class="s-frame" x="196" y="280" width="88" height="8" rx="3"/>
+          <!-- desk -->
+          <rect class="s-desktop" x="0" y="288" width="480" height="12"/>
+          <rect class="s-desk" x="0" y="300" width="480" height="120"/>
+          <path class="s-deskline" d="M20 330h120M340 330h120"/>
+          <!-- lamp -->
+          <path class="s-cone" d="M396 196 L330 288 L452 288 Z" fill="url(#ds-cone)"/>
+          <g class="s-lamp"><rect x="434" y="282" width="28" height="7" rx="3"/><path d="M448 284 L436 214 L404 194" fill="none" stroke-width="4" stroke-linecap="round"/><path d="M388 196 l14 -16 18 12 -8 14z"/></g>
+          <!-- plant -->
+          <g class="sway"><path class="s-leaf" d="M38 264c-10-10-12-24-4-30M38 264c2-14 8-22 16-24M38 264c-4-10 2-26 2-34"/>
+            <ellipse class="s-leafc" cx="34" cy="234" rx="5" ry="8"/><ellipse class="s-leafc" cx="54" cy="240" rx="5" ry="8" transform="rotate(40 54 240)"/><ellipse class="s-leafc" cx="40" cy="228" rx="4" ry="8"/></g>
+          <rect class="s-pot" x="26" y="262" width="26" height="26" rx="3"/>
+          <!-- coffee -->
+          <g class="steam"><path d="M70 262c-4-6 4-10 0-16"/><path d="M78 260c-4-6 4-10 0-16" style="animation-delay:-.7s"/><path d="M86 262c-4-6 4-10 0-16" style="animation-delay:-1.4s"/></g>
+          <rect class="s-mug" x="64" y="266" width="28" height="22" rx="3"/><path class="s-mugh" d="M92 271c8 0 8 12 0 12"/>
+          <path class="s-heart" d="M78 274c-1-2-5-2-5 1.5 0 2.5 3.5 4 5 6 1.5-2 5-3.5 5-6 0-3.5-4-3.5-5-1.5z"/>
+          <!-- cat -->
+          <g class="cat"><ellipse class="s-cat" cx="378" cy="278" rx="27" ry="11"/>
+            <path class="s-cat tail" d="M402 282c14 2 18-10 10-14" fill="none" stroke-width="5" stroke-linecap="round"/>
+            <circle class="s-cat" cx="352" cy="274" r="11"/><path class="s-cat" d="M344 266l1-9 6 6zM355 263l6-6 1 9z"/>
+            <path class="s-catface" d="M346 275q2 2 4 0M354 275q2 2 4 0"/>
+            <text class="zzz" x="356" y="256">z</text><text class="zzz" x="362" y="248" style="animation-delay:-1.2s">z</text></g>
+          <!-- keyboard + hands -->
+          <rect class="s-kb" x="170" y="289" width="140" height="8" rx="2"/>
+          <!-- developer (back view) -->
+          <g class="dev">
+            <path class="s-hoodie2" d="M172 352 Q140 326 176 296 L194 300 Q170 326 192 346 Z"/>
+            <path class="s-hoodie2" d="M308 352 Q340 326 304 296 L286 300 Q310 326 288 346 Z"/>
+            <ellipse class="s-skin hand hl" cx="190" cy="296" rx="9" ry="5"/>
+            <ellipse class="s-skin hand hr" cx="290" cy="296" rx="9" ry="5"/>
+            <g class="torso">
+              <path class="s-hoodie" d="M146 420 C146 362 176 330 240 328 C304 330 334 362 334 420 Z"/>
+              <path class="s-hoodie2" d="M204 334 C210 352 270 352 276 334 C266 326 214 326 204 334 Z"/>
+              <path class="s-hoodline" d="M240 352 V420"/>
+              <rect class="s-skin2" x="228" y="300" width="24" height="34" rx="6"/>
+              <g class="head">
+                <ellipse class="s-skin" cx="209" cy="290" rx="5" ry="7"/><ellipse class="s-skin" cx="271" cy="290" rx="5" ry="7"/>
+                <circle class="s-hair" cx="240" cy="282" r="30"/>
+                <g class="s-hair"><circle cx="222" cy="262" r="8"/><circle cx="238" cy="255" r="9"/><circle cx="256" cy="261" r="8"/><circle cx="215" cy="278" r="7"/><circle cx="265" cy="278" r="7"/></g>
+                <path class="s-phones" d="M205 284 A35 35 0 0 1 275 284" fill="none" stroke-width="6"/>
+                <rect class="s-phones" x="199" y="276" width="13" height="24" rx="5"/><rect class="s-phones" x="268" y="276" width="13" height="24" rx="5"/>
+                <rect x="201" y="282" width="3" height="12" rx="1.5" fill="var(--s-k)"/><rect x="276" y="282" width="3" height="12" rx="1.5" fill="var(--s-k)"/>
+              </g>
+            </g>
           </g>
-
-          <!-- browser / code editor window -->
-          <g>
-            <rect x="42" y="128" width="196" height="150" rx="10" fill="#141C27" stroke="#ECE7DA" stroke-opacity="0.14"/>
-            <rect x="42" y="128" width="196" height="22" rx="10" fill="#1B2531"/>
-            <circle cx="56" cy="139" r="3" fill="#FF7A1A" opacity="0.9"/>
-            <circle cx="67" cy="139" r="3" fill="#ECE7DA" opacity="0.35"/>
-            <circle cx="78" cy="139" r="3" fill="#ECE7DA" opacity="0.35"/>
-            <g fill="#ECE7DA" opacity="0.4">
-              <rect x="56" y="164" width="60" height="6" rx="3"/>
-              <rect x="56" y="180" width="150" height="6" rx="3"/>
-              <rect x="56" y="196" width="95" height="6" rx="3"/>
-            </g>
-            <rect x="56" y="212" width="120" height="6" rx="3" fill="#FF7A1A" opacity="0.85"/>
-            <g fill="#ECE7DA" opacity="0.4">
-              <rect x="56" y="228" width="70" height="6" rx="3"/>
-              <rect x="56" y="244" width="110" height="6" rx="3"/>
-            </g>
-            <rect x="56" y="260" width="34" height="12" rx="3" fill="#FF7A1A" opacity="0.18" stroke="#FF7A1A" stroke-opacity="0.7"/>
-          </g>
-
-          <!-- mobile app window -->
-          <g>
-            <rect x="252" y="158" width="106" height="212" rx="20" fill="#141C27" stroke="#ECE7DA" stroke-opacity="0.16"/>
-            <rect x="292" y="168" width="26" height="4" rx="2" fill="#ECE7DA" opacity="0.3"/>
-            <rect x="264" y="184" width="82" height="168" rx="10" fill="#1B2531"/>
-            <rect x="264" y="184" width="82" height="26" rx="10" fill="#233247"/>
-            <circle cx="278" cy="197" r="5" fill="#FF7A1A" opacity="0.85"/>
-            <rect x="290" y="193" width="40" height="5" rx="2.5" fill="#ECE7DA" opacity="0.4"/>
-            <g fill="#ECE7DA" opacity="0.3">
-              <rect x="274" y="222" width="62" height="26" rx="6"/>
-              <rect x="274" y="256" width="62" height="26" rx="6"/>
-            </g>
-            <rect x="274" y="290" width="62" height="26" rx="6" fill="#FF7A1A" opacity="0.16" stroke="#FF7A1A" stroke-opacity="0.7"/>
-            <g fill="#ECE7DA" opacity="0.55">
-              <circle cx="291" cy="336" r="3"/>
-              <circle cx="305" cy="336" r="3"/>
-              <circle cx="319" cy="336" r="3"/>
-            </g>
-          </g>
+          <!-- chair back -->
+          <rect class="s-chair" x="178" y="372" width="124" height="60" rx="16"/>
+          <rect class="s-chair2" x="190" y="382" width="100" height="6" rx="3"/>
+          <g id="dev-fx"></g>
         </svg>
-        <div class="scanline"></div>
         <div class="float-tag tag-a">class: <b>full-stack + AI</b></div>
-        <div class="float-tag tag-b">conf: <b>0.99</b></div>
+        <div class="float-tag tag-b">status: <b id="dev-state">coding…</b></div>
         <div class="float-tag tag-c">React · Flutter · PyTorch</div>
       </div>
     </div>
+  </div>
+  <a href="#about" class="scroll-cue" aria-label="Scroll to About"><span></span></a>
+</section>
+
+<!-- ================= SCROLL STORY: 3D LAPTOP ================= -->
+<section class="dev3d" id="build" aria-label="Scroll story: a 3D laptop opens, code is written, the tech stack appears and the app ships">
+  <div class="dev3d-sticky">
+    <div class="dev3d-stage" aria-hidden="true">
+      <div class="dev3d-world">
+        <div class="laptop">
+          <div class="lp-base"><div class="lp-keys"></div><div class="lp-pad"></div></div>
+          <div class="lp-lid">
+            <div class="lp-screen">
+              <div class="lp-bar"><i></i><i></i><i></i><span>app.tsx</span></div>
+              <pre class="lp-code"><span><b class="k">import</b> { useAI } <b class="k">from</b> <b class="s">'./model'</b>;</span>
+<span></span>
+<span><b class="k">export default function</b> <b class="f">App</b>() {</span>
+<span>  <b class="k">const</b> face = <b class="f">useAI</b>(<b class="s">'vit'</b>);</span>
+<span>  <b class="k">return</b> (</span>
+<span>    &lt;<b class="f">Dashboard</b> data={face} /&gt;</span>
+<span>  );</span>
+<span>}</span>
+<span><b class="c">// npm run deploy 🚀</b></span></pre>
+              <div class="lp-toast">✓ Deployed · web · api · mobile</div>
+            </div>
+          </div>
+        </div>
+        <div class="dev3d-orbit">
+          <span style="--i:0">React</span><span style="--i:1">PyTorch</span><span style="--i:2">Flutter</span>
+          <span style="--i:3">Node.js</span><span style="--i:4">TypeScript</span><span style="--i:5">Docker</span>
+          <span style="--i:6">OpenCV</span><span style="--i:7">PostgreSQL</span>
+        </div>
+      </div>
+    </div>
+    <ol class="dev3d-steps wrap">
+      <li class="on"><span class="eyebrow">00 / Idea</span><h2>Every build starts with an <span class="accent">idea</span>.</h2><p>A problem worth solving — a model to train, an app to ship, a workflow to make simpler.</p></li>
+      <li><span class="eyebrow">01 / Code</span><h2>Then I open the laptop and <span class="accent">write it</span>.</h2><p>Clean, typed, tested code — from data pipelines and models to APIs and interfaces.</p></li>
+      <li><span class="eyebrow">02 / Stack</span><h2>With the right <span class="accent">tools</span>.</h2><p>PyTorch and OpenCV for vision, React and Node for the web, Flutter for mobile, Docker to run it anywhere.</p></li>
+      <li><span class="eyebrow">03 / Ship</span><h2>And ship it to <span class="accent">real users</span>.</h2><p>Web, API and mobile — the same end-to-end mindset I used in production at INSA.</p><a href="#projects" class="btn btn-primary">See the projects →</a></li>
+    </ol>
+    <span class="dev3d-hint" aria-hidden="true">scroll ↓</span>
+    <div class="dev3d-bar" aria-hidden="true"><span></span></div>
   </div>
 </section>
 
@@ -446,35 +290,35 @@
         <div class="lang-list">
           <div class="lang-item">
             <div class="lang-top"><b>English</b><span>Fluent</span></div>
-            <div class="lang-bar"><div class="lang-fill" style="width:92%"></div></div>
+            <div class="lang-bar"><div class="lang-fill" style="--w:92%"></div></div>
           </div>
           <div class="lang-item">
             <div class="lang-top"><b>Amharic</b><span>Native</span></div>
-            <div class="lang-bar"><div class="lang-fill" style="width:100%"></div></div>
+            <div class="lang-bar"><div class="lang-fill" style="--w:100%"></div></div>
           </div>
           <div class="lang-item">
             <div class="lang-top"><b>Italian</b><span>Basic</span></div>
-            <div class="lang-bar"><div class="lang-fill" style="width:35%"></div></div>
+            <div class="lang-bar"><div class="lang-fill" style="--w:35%"></div></div>
           </div>
         </div>
       </div>
-      <div class="reveal">
-        <div class="info-card">
+      <div class="info-stack">
+        <div class="info-card glass bbox tilt reveal">
           <div class="info-label">Education</div>
           <div class="info-main">MSc, Computer Science with AI</div>
           <div class="info-sub">University of Verona — CV&amp;DL · ML&amp;PR · AI&amp;Finance</div>
         </div>
-        <div class="info-card">
+        <div class="info-card glass bbox tilt reveal">
           <div class="info-label">Experience</div>
           <div class="info-main">Full-Stack Developer, 2 Years</div>
           <div class="info-sub">Information Network Security Agency (INSA), Ethiopia</div>
         </div>
-        <div class="info-card">
+        <div class="info-card glass bbox tilt reveal">
           <div class="info-label">Education</div>
           <div class="info-main">BSc, Software Engineering</div>
           <div class="info-sub">Debre Markos University</div>
         </div>
-        <div class="info-card">
+        <div class="info-card glass bbox tilt reveal">
           <div class="info-label">Focus areas</div>
           <div class="info-main">Computer Vision &amp; Explainable AI</div>
           <div class="info-sub">Transformers, CNNs, domain adaptation, self-supervised learning</div>
@@ -490,33 +334,22 @@
     <div class="section-head reveal">
       <div class="eyebrow">02 / Skills</div>
       <h2>The stack behind the models &amp; the apps.</h2>
-      <p class="section-sub">A toolkit spanning research (model training, explainability) and production (web, mobile, infra).</p>
+      <p class="section-sub">A toolkit spanning research (model training, explainability) and production (web, mobile, infra). Click any skill to see the projects that use it.</p>
     </div>
-    <div class="skills-grid">
-      <div class="skill-card reveal">
-        <div class="skill-cat">AI / Machine Learning</div>
-        <div class="skill-tags">
-          <span>PyTorch</span><span>TensorFlow</span><span>scikit-learn</span><span>ViT</span><span>ResNet/CNN</span><span>Grad-CAM</span><span>SHAP</span><span>OpenCV</span>
+    <div class="stack-marquee reveal" aria-hidden="true">
+      <div class="mq-row"><div class="mq-track" id="mq-a"></div></div>
+      <div class="mq-row mq-rev"><div class="mq-track" id="mq-b"></div></div>
+    </div>
+    <div class="skills-layout">
+      <div class="skills-grid" id="skills-grid"></div>
+      <aside class="skills-chart glass reveal" aria-labelledby="chart-title">
+        <div class="info-label" id="chart-title">Project distribution</div>
+        <div class="donut-wrap">
+          <svg class="donut" viewBox="0 0 120 120" role="img" aria-label="Projects by domain"></svg>
+          <div class="donut-center"><b id="donut-total">0</b><span>projects</span></div>
         </div>
-      </div>
-      <div class="skill-card reveal">
-        <div class="skill-cat">Web Development</div>
-        <div class="skill-tags">
-          <span>React</span><span>JavaScript</span><span>TypeScript</span><span>Node.js</span><span>Express</span><span>HTML/CSS</span>
-        </div>
-      </div>
-      <div class="skill-card reveal">
-        <div class="skill-cat">Mobile</div>
-        <div class="skill-tags">
-          <span>Flutter</span><span>Dart</span><span>Android</span><span>Firebase</span>
-        </div>
-      </div>
-      <div class="skill-card reveal">
-        <div class="skill-cat">Data &amp; Infra</div>
-        <div class="skill-tags">
-          <span>MongoDB</span><span>PostgreSQL</span><span>MySQL</span><span>Docker</span><span>Git</span><span>Java</span><span>C++</span>
-        </div>
-      </div>
+        <ul class="donut-legend" id="donut-legend"></ul>
+      </aside>
     </div>
   </div>
 </section>
@@ -524,143 +357,26 @@
 <!-- ================= PROJECTS ================= -->
 <section id="projects">
   <div class="wrap">
-    <div class="section-head reveal">
-      <div class="eyebrow">03 / Projects</div>
-      <h2>Selected work.</h2>
-      <p class="section-sub">Real projects from research and independent development — filter by domain.</p>
+    <div class="pj-head">
+      <div class="section-head reveal">
+        <div class="eyebrow">03 / Projects</div>
+        <h2>Work that left the <span class="pj-hl">notebook</span>.</h2>
+        <p class="section-sub">Four flagship builds up close — then everything else I’ve shipped, from research models to production apps.</p>
+      </div>
+      <p class="pj-scroll reveal" aria-hidden="true"><span></span>Scroll the stack</p>
     </div>
+    <div class="pj-status" aria-live="polite"></div>
 
-    <div class="proj-filter">
-      <button class="fbtn active" data-filter="all">All</button>
-      <button class="fbtn" data-filter="cv">Computer Vision</button>
-      <button class="fbtn" data-filter="ml">Machine Learning</button>
-      <button class="fbtn" data-filter="app">Web &amp; Mobile</button>
+    <div class="stack" id="pj-stack"></div>
+
+    <div class="pj-more-head reveal">
+      <h3>Also shipped</h3>
+      <span id="pj-more-count"></span>
     </div>
-
-    <div class="proj-grid">
-
-      <div class="proj-card reveal" data-cat="cv">
-        <div class="proj-top">
-          <span class="proj-class">Computer Vision · XAI</span>
-          <span class="proj-conf">AUC 0.996</span>
-        </div>
-        <h3 class="proj-title">Detecting AI-Generated Faces</h3>
-        <p class="proj-desc">Distinguishing real from synthetic faces on a 140k-image dataset. ViT-Small, ResNet-18, FFT-ResNet, DANN and SimCLR compared, with a full explainability layer — Integrated Gradients, attention-map visualization, and masking-effect analysis.</p>
-        <div class="proj-tags"><span>PyTorch</span><span>ViT</span><span>Grad-CAM</span><span>Jupyter</span></div>
-        <div class="proj-links"><a href="https://github.com/Abrham-Assefa/Detecting-AI-Generated-Faces" target="_blank" rel="noopener">GitHub ↗</a></div>
-      </div>
-
-      <div class="proj-card reveal" data-cat="ml cv">
-        <div class="proj-top">
-          <span class="proj-class">Machine Learning · CV</span>
-          <span class="proj-conf">99.5% acc</span>
-        </div>
-        <h3 class="proj-title">ASL Hand Sign Classification</h3>
-        <p class="proj-desc">Real-time American Sign Language classifier using MediaPipe hand landmarks. Benchmarked SVM against multiple classical models, with GridSearch tuning, SHAP explanations, and confusion-matrix analysis; SVM was the top performer.</p>
-        <div class="proj-tags"><span>MediaPipe</span><span>SVM</span><span>SHAP</span><span>scikit-learn</span></div>
-        <div class="proj-links"><a href="https://github.com/Abrham-Assefa/ASL-HAND-SIGN-CLASSIFICATION" target="_blank" rel="noopener">GitHub ↗</a></div>
-      </div>
-
-      <div class="proj-card reveal" data-cat="cv ml">
-        <div class="proj-top">
-          <span class="proj-class">Computer Vision</span>
-          <span class="proj-conf">Ensemble + TTA</span>
-        </div>
-        <h3 class="proj-title">Traffic Sign Classification</h3>
-        <p class="proj-desc">Autonomous-driving-oriented traffic sign recognition on GTSRB. Built both a classical pipeline (HOG features + SVM/KNN) and a deep learning pipeline (EfficientNetV2S with test-time augmentation and a weighted ensemble) for robustness under varying conditions.</p>
-        <div class="proj-tags"><span>EfficientNetV2S</span><span>HOG</span><span>TTA</span></div>
-        <div class="proj-links"><a href="https://github.com/Abrham-Assefa/Trafic-Light-Classfiaction-" target="_blank" rel="noopener">GitHub ↗</a></div>
-      </div>
-
-      <div class="proj-card reveal" data-cat="ml">
-        <div class="proj-top">
-          <span class="proj-class">AI &amp; Finance</span>
-          <span class="proj-conf">RL + Stochastic Vol</span>
-        </div>
-        <h3 class="proj-title">Optimal Stock Liquidation</h3>
-        <p class="proj-desc">Almgren-Chriss framework combined with Heston stochastic volatility to compare static vs. dynamic liquidation strategies, extended with tabular Q-Learning and SARSA reinforcement-learning agents in a self-contained research notebook.</p>
-        <div class="proj-tags"><span>Reinforcement Learning</span><span>Quant Finance</span><span>Python</span></div>
-        <div class="proj-links"><a href="https://github.com/Abrham-Assefa/AI-and-Finacee-project-" target="_blank" rel="noopener">GitHub ↗</a></div>
-      </div>
-
-      <div class="proj-card reveal" data-cat="cv ml">
-        <div class="proj-top">
-          <span class="proj-class">Computer Vision · Video</span>
-          <span class="proj-conf">CNN + LSTM</span>
-        </div>
-        <h3 class="proj-title">Deepfake Video Detection</h3>
-        <p class="proj-desc">Hybrid ResNeXt50 + LSTM architecture trained on the Celeb-DF dataset to detect manipulated video content by combining frame-level spatial features with temporal sequence modeling.</p>
-        <div class="proj-tags"><span>ResNeXt50</span><span>LSTM</span><span>Celeb-DF</span></div>
-        <div class="proj-links"><span style="color:var(--paper-dimmer)">Private repo</span></div>
-      </div>
-
-      <div class="proj-card reveal" data-cat="ml">
-        <div class="proj-top">
-          <span class="proj-class">Model Compression</span>
-          <span class="proj-conf">Teacher → Student</span>
-        </div>
-        <h3 class="proj-title">Knowledge Distillation Pipeline</h3>
-        <p class="proj-desc">EfficientNet-B4 teacher distilled into EfficientNet-B1 and MobileNetV3 students on a plant-disease dataset, with training speed optimized via epoch reduction, batch-size tuning, early stopping, and automated dataset setup.</p>
-        <div class="proj-tags"><span>EfficientNet</span><span>MobileNetV3</span><span>Distillation</span></div>
-        <div class="proj-links"><span style="color:var(--paper-dimmer)">Private repo</span></div>
-      </div>
-
-      <div class="proj-card reveal" data-cat="app">
-        <div class="proj-top">
-          <span class="proj-class">Web Development · Gov</span>
-          <span class="proj-conf">Live</span>
-        </div>
-        <h3 class="proj-title">Africa Urban Forum</h3>
-        <p class="proj-desc">Official website for the Africa Urban Forum (AUF) 2024, an Ethiopian government initiative on sustainable urbanization under Agenda 2063 — event info, scholarship applications, and registration.</p>
-        <div class="proj-tags"><span>React</span><span>Government</span><span>Responsive</span></div>
-        <div class="proj-links"><a href="https://auf.gov.et" target="_blank" rel="noopener">Live Site ↗</a></div>
-      </div>
-
-      <div class="proj-card reveal" data-cat="app">
-        <div class="proj-top">
-          <span class="proj-class">Mobile · Privacy</span>
-          <span class="proj-conf">Cross-platform</span>
-        </div>
-        <h3 class="proj-title">Sirkuni App</h3>
-        <p class="proj-desc">A privacy-first messaging app built around a simple promise — "say anything, stay private, control time." Includes a marketing site and downloadable mobile client.</p>
-        <div class="proj-tags"><span>Flutter</span><span>Firebase</span><span>Privacy</span></div>
-        <div class="proj-links"><span style="color:var(--paper-dimmer)">Client project</span></div>
-      </div>
-
-      <div class="proj-card reveal" data-cat="app">
-        <div class="proj-top">
-          <span class="proj-class">Full-Stack · Logistics</span>
-          <span class="proj-conf">Live</span>
-        </div>
-        <h3 class="proj-title">Fast Time Express</h3>
-        <p class="proj-desc">A bus and fleet management dashboard for a transport company — multi-role sign-in, dispatch scheduling, and a language-selectable admin console.</p>
-        <div class="proj-tags"><span>Node.js</span><span>Dashboard</span><span>Multi-language</span></div>
-        <div class="proj-links"><a href="http://busmanagement.fasttimeexpress.net" target="_blank" rel="noopener">Live Site ↗</a></div>
-      </div>
-
-      <div class="proj-card reveal" data-cat="app">
-        <div class="proj-top">
-          <span class="proj-class">Full-Stack · INSA</span>
-          <span class="proj-conf">Enterprise</span>
-        </div>
-        <h3 class="proj-title">NZk System — Fuel Management</h3>
-        <p class="proj-desc">An internal fuel management and monitoring system built during my time at INSA — card balance tracking, registration records, and totalizer reporting dashboards.</p>
-        <div class="proj-tags"><span>Node.js</span><span>Dashboard</span><span>Reporting</span></div>
-        <div class="proj-links"><span style="color:var(--paper-dimmer)">Internal / INSA</span></div>
-      </div>
-
-      <div class="proj-card reveal" data-cat="app">
-        <div class="proj-top">
-          <span class="proj-class">Full-Stack · Campus</span>
-          <span class="proj-conf">Deployed</span>
-        </div>
-        <h3 class="proj-title">DMU OSC — One Card System</h3>
-        <p class="proj-desc">A campus one-card system built for Debre Markos University, handling student ID issuance and record management for the whole student body.</p>
-        <div class="proj-tags"><span>Full-Stack</span><span>Campus IT</span><span>Records</span></div>
-        <div class="proj-links"><span style="color:var(--paper-dimmer)">Deployed on campus</span></div>
-      </div>
-
-    </div>
+    <div class="pj-more" id="pj-more"></div>
+    <noscript>
+      <p>Enable JavaScript to browse projects, or visit <a href="https://github.com/Abrham-Assefa">github.com/Abrham-Assefa</a>.</p>
+    </noscript>
   </div>
 </section>
 
@@ -672,6 +388,7 @@
       <h2>Education &amp; trajectory.</h2>
     </div>
     <div class="timeline">
+      <div class="timeline-progress" aria-hidden="true"></div>
       <div class="tl-item reveal">
         <div class="tl-date">2025 — Present</div>
         <h3 class="tl-title">MSc, Computer Science with Artificial Intelligence</h3>
@@ -698,53 +415,94 @@
       </div>
     </div>
 
-    <div class="section-head reveal" style="margin-top:80px;">
+    <div class="section-head reveal recog-head">
       <div class="eyebrow">Recognition</div>
-      <h2 style="font-size:clamp(24px,3vw,30px);">Speaking &amp; certifications.</h2>
+      <h2 class="h2-sm">Speaking &amp; certifications.</h2>
     </div>
-    <div class="skills-grid" style="grid-template-columns:repeat(2,1fr);">
-      <div class="skill-card bbox reveal">
+    <div class="recog-grid">
+      <div class="skill-card glass bbox tilt reveal">
+        <span class="bbox-tag">speaker</span>
         <div class="skill-cat">Guest Speaker</div>
-        <div class="proj-title" style="margin-bottom:6px;">Techtonic Tribe Tech Meetup</div>
+        <div class="proj-title">Techtonic Tribe Tech Meetup</div>
         <p class="proj-desc">Invited as a featured developer guest to share experience with the Techtonic Tribe community in Debre, Ethiopia.</p>
       </div>
-      <div class="skill-card bbox reveal">
+      <div class="skill-card glass bbox tilt reveal">
+        <span class="bbox-tag">certified</span>
         <div class="skill-cat">Certification</div>
-        <div class="proj-title" style="margin-bottom:6px;">Mobile Device Management (MDM)</div>
+        <div class="proj-title">Mobile Device Management (MDM)</div>
         <p class="proj-desc">Trained enterprise teams in Dubai on MDM strategy and rollout — certified through Edoxi Training Institute.</p>
       </div>
     </div>
   </div>
 </section>
 
+<!-- ================= GITHUB ================= -->
+<section id="github">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">05 / Open Source</div>
+      <h2>Live from GitHub.</h2>
+    </div>
+    <div class="gh-grid" id="gh-grid" aria-busy="true">
+      <div class="gh-card skeleton"></div><div class="gh-card skeleton"></div><div class="gh-card skeleton"></div>
+      <div class="gh-card skeleton"></div><div class="gh-card skeleton"></div><div class="gh-card skeleton"></div>
+    </div>
+    <p class="gh-note" id="gh-note"></p>
+  </div>
+</section>
+
 <!-- ================= CONTACT ================= -->
 <section id="contact">
   <div class="wrap">
-    <div class="contact-panel reveal">
+    <div class="contact-panel glass reveal">
       <div class="contact-left">
-        <div class="eyebrow">05 / Contact</div>
+        <div class="eyebrow">06 / Contact</div>
         <h2>Let's build something.</h2>
         <p>Open to AI engineering, computer vision, full-stack, and mobile developer roles — remote or based in Verona, Italy. Reach out directly, or find me on GitHub / LinkedIn.</p>
+        <div class="term">
+          <div class="term-bar" aria-hidden="true"><i></i><i></i><i></i><span>~/contact</span></div>
+          <div><span class="cmt">$</span> <span class="prompt">whoami</span></div>
+          <div>abrham_assefa — AI &amp; Full-Stack Developer</div>
+          <div>&nbsp;</div>
+          <div><span class="cmt">$</span> <span class="prompt">contact</span> --email</div>
+          <div class="email-row"><a href="mailto:abrhamassefa759@gmail.com">abrhamassefa759@gmail.com</a> <button type="button" class="copy-email" aria-label="Copy email address">copy</button></div>
+          <div>&nbsp;</div>
+          <div><span class="cmt">$</span> <span class="prompt">contact</span> --social</div>
+          <div><a href="https://www.linkedin.com/in/abrham-assefa-1599b1251" target="_blank" rel="noopener">linkedin.com/in/abrham-assefa</a></div>
+          <div><a href="https://github.com/Abrham-Assefa" target="_blank" rel="noopener">github.com/Abrham-Assefa</a></div>
+          <div><a href="https://github.com/abrham-cyper" target="_blank" rel="noopener">github.com/abrham-cyper</a></div>
+        </div>
       </div>
-      <div class="term">
-        <div><span class="cmt">$</span> <span class="prompt">whoami</span></div>
-        <div>abrham_assefa — AI &amp; Full-Stack Developer</div>
-        <div>&nbsp;</div>
-        <div><span class="cmt">$</span> <span class="prompt">contact</span> --email</div>
-        <div><a href="mailto:abrhamassefa759@gmail.com">abrhamassefa759@gmail.com</a></div>
-        <div>&nbsp;</div>
-        <div><span class="cmt">$</span> <span class="prompt">contact</span> --social</div>
-        <div><a href="https://www.linkedin.com/in/abrham-assefa-1599b1251" target="_blank" rel="noopener">linkedin.com/in/abrham-assefa</a></div>
-        <div><a href="https://github.com/Abrham-Assefa" target="_blank" rel="noopener">github.com/Abrham-Assefa</a></div>
-        <div><a href="https://github.com/abrham-cyper" target="_blank" rel="noopener">github.com/abrham-cyper</a></div>
-      </div>
+      <form class="contact-form" id="contact-form" novalidate>
+        <div class="field">
+          <label for="cf-name">Name</label>
+          <input id="cf-name" name="name" type="text" autocomplete="name" required minlength="2" maxlength="80">
+          <p class="field-error" id="cf-name-err" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="cf-email">Email</label>
+          <input id="cf-email" name="email" type="email" autocomplete="email" required maxlength="120">
+          <p class="field-error" id="cf-email-err" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="cf-message">Message</label>
+          <textarea id="cf-message" name="message" rows="5" required minlength="10" maxlength="3000"></textarea>
+          <div class="field-meta"><p class="field-error" id="cf-message-err" aria-live="polite"></p><span class="char-count">0 / 3000</span></div>
+        </div>
+        <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="btn btn-primary magnetic submit-btn" type="submit"><span class="btn-label">Send message</span> <span aria-hidden="true">→</span></button>
+        <p class="form-status" role="status" aria-live="polite"></p>
+      </form>
     </div>
   </div>
 </section>
 
+</main>
+
 <footer>
   <div class="wrap foot-row">
-    <p>© 2026 ABRHAM ASSEFA — BUILT IN VERONA, ITALY</p>
+    <p>© <span id="year">2026</span> ABRHAM ASSEFA — BUILT IN VERONA, ITALY</p>
+    <p class="foot-hint">Press <kbd>⌘K</kbd> to navigate</p>
     <div class="foot-links">
       <a href="https://github.com/Abrham-Assefa" target="_blank" rel="noopener">GitHub</a>
       <a href="https://www.linkedin.com/in/abrham-assefa-1599b1251" target="_blank" rel="noopener">LinkedIn</a>
@@ -753,50 +511,32 @@
   </div>
 </footer>
 
-<script>
-  // typed role rotator
-  const roles = ["AI / Machine Learning Engineer", "Computer Vision Developer", "Full-Stack Web Developer", "Flutter Mobile Developer"];
-  const typedEl = document.getElementById('typed');
-  let ri = 0, ci = 0, deleting = false;
-  function tick(){
-    const word = roles[ri];
-    if(!deleting){
-      ci++;
-      typedEl.textContent = word.slice(0, ci);
-      if(ci === word.length){ deleting = true; setTimeout(tick, 1400); return; }
-    } else {
-      ci--;
-      typedEl.textContent = word.slice(0, ci);
-      if(ci === 0){ deleting = false; ri = (ri + 1) % roles.length; }
-    }
-    setTimeout(tick, deleting ? 35 : 65);
-  }
-  tick();
+<button class="back-to-top" type="button" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
 
-  // scroll reveal
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
-  }, {threshold:0.12});
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+<!-- project modal -->
+<dialog class="modal" id="proj-modal" aria-labelledby="modal-title">
+  <div class="modal-inner">
+    <button class="modal-close icon-btn" type="button" aria-label="Close">✕</button>
+    <div class="modal-body"></div>
+  </div>
+</dialog>
 
-  // project filter
-  const fbtns = document.querySelectorAll('.fbtn');
-  const cards = document.querySelectorAll('.proj-card');
-  fbtns.forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      fbtns.forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      const f = btn.dataset.filter;
-      cards.forEach(c=>{
-        const cats = c.dataset.cat.split(' ');
-        c.style.display = (f === 'all' || cats.includes(f)) ? 'flex' : 'none';
-      });
-    });
-  });
+<!-- command palette -->
+<dialog class="palette" id="palette" aria-label="Command palette">
+  <div class="palette-inner">
+    <div class="palette-input">
+      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <input type="text" placeholder="Type a command or search…" aria-label="Command" aria-controls="palette-list" aria-autocomplete="list" role="combobox" aria-expanded="true">
+      <kbd>esc</kbd>
+    </div>
+    <ul class="palette-list" id="palette-list" role="listbox"></ul>
+    <div class="palette-foot"><span><kbd>↑</kbd><kbd>↓</kbd> navigate</span><span><kbd>↵</kbd> select</span></div>
+  </div>
+</dialog>
 
-  // apply bounding-box corner styling to key cards
-  document.querySelectorAll('.skill-card, .proj-card, .info-card').forEach(c=>c.classList.add('bbox'));
-</script>
+<div class="toast" role="status" aria-live="polite"></div>
 
 </body>
 </html>

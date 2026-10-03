@@ -1,0 +1,31 @@
+# Abrham Assefa — AI & Full-Stack Developer Portfolio
+
+Interactive portfolio built with **Vite + vanilla JS/CSS** (no framework, ~25 KB gzipped).
+
+## Features
+- Dark / light theme (remembers choice, `T` shortcut)
+- Animated hero: neural-net canvas background + illustrated "developer coding" scene (typing editor, floating hearts, day/night window that follows the theme)
+- Pinned scroll story: a CSS 3D laptop opens, types code, the tech stack orbits around it, then it ships
+- Projects: scroll-stacking flagship cards with animated visuals + "Also shipped" spotlight grid, case-study modals (`#project/<slug>` deep links)
+- Skills visualization, experience & education timeline
+- Live GitHub repos (cached, with offline fallback)
+- Scrolling tech-stack marquee in the Skills section
+- Contact form with validation (Formspree or mailto fallback)
+- Command palette (`⌘/Ctrl + K` or `/`), back-to-top, two-way scroll animations (replay when scrolling down and up) with hero parallax
+- SEO / Open Graph / JSON-LD, accessible markup, respects `prefers-reduced-motion`
+
+## Develop
+```bash
+npm install
+npm run dev      # http://localhost:5173
+npm run build    # outputs dist/
+npm run preview
+```
+
+## Configuration
+- **Contact form:** copy `.env.example` to `.env` and set `VITE_FORMSPREE_ID=<your form id>`. Without it, the form opens the visitor's email client.
+- **Résumé:** drop `resume.pdf` into `public/`. The "Résumé" button appears automatically when the file exists.
+- **Projects / skills:** edit `src/data/projects.js` and `src/data/skills.js`.
+
+## Deploy
+Pushing to `main` builds and deploys automatically via `.github/workflows/deploy.yml` (GitHub Pages → https://abrham-assefa.github.io/portfolio/). `vite.config.js` uses `base: './'`, so `dist/` works on GitHub Pages or any static host. Update the URL in `index.html` meta tags and `public/sitemap.xml` if the domain differs.

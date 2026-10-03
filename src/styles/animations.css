@@ -1,0 +1,29 @@
+/* reveal only hides content when JS is running. Two-way: below viewport → rises up, above (.up) → drops down */
+.js .reveal{
+  --ty:56px;--tx:0px;--sc:1;
+  opacity:0;transform:translate3d(var(--tx),var(--ty),0) scale(var(--sc));
+  transition:opacity .7s var(--ease-out),transform 1s var(--ease-out),filter .7s var(--ease-out),clip-path 1s var(--ease-out);
+  transition-delay:var(--d,0ms);
+}
+.js .reveal.up{--ty:-56px;}
+.js .reveal:not(.in){transition-duration:.45s;transition-delay:0ms;}
+.js .reveal.rv-fade:not(.in){filter:blur(8px);}
+.js .reveal.rv-scale{--sc:.9;--ty:70px;}
+.js .reveal.rv-scale.up{--ty:-70px;}
+.js .reveal.rv-left{--tx:-60px;--ty:0px;}
+.js .reveal.rv-wipe{--ty:30px;clip-path:inset(-10% -80px 100% -80px);}
+.js .reveal.rv-wipe.up{--ty:-30px;clip-path:inset(100% -80px -10% -80px);}
+.js .reveal.rv-wipe.in{clip-path:inset(-10% -80px -10% -80px);}
+.js .reveal.in{opacity:1;transform:none;filter:none;}
+.section-head h2{will-change:transform;}
+.hero .hero-grid{will-change:transform,opacity;}
+.js .tilt.reveal.in{transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));}
+.js .tilt.reveal.in:not(.is-tilting){transition:opacity .8s var(--ease-out),transform .4s var(--ease-out),border-color .25s ease;}
+
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;}
+  .js .reveal{opacity:1;transform:none;}
+  .bg-glow{animation:none;}
+}
