@@ -4,7 +4,7 @@ Interactive portfolio built with **Vite + vanilla JS/CSS** (no framework, ~25 KB
 
 ## Features
 - Dark / light theme (remembers choice, `T` shortcut)
-- Animated hero: neural-net canvas background + live "AI pipeline" card (code → model → inference → training → deploy)
+- Animated hero: neural-net canvas background + illustrated "developer coding" scene (typing editor, floating hearts, day/night window that follows the theme)
 - Filterable/searchable projects grid with detail modals (`#project/<slug>` deep links)
 - Skills visualization, experience & education timeline
 - Live GitHub stats & repos (cached, with offline fallback)

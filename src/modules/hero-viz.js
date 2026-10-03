@@ -1,180 +1,123 @@
 import { $, reducedMotion } from './utils.js';
 
-// One cycle (~11s): type code → train (net fires, curves draw, epochs tick) → infer (landmarks, box, Grad-CAM) → deploy.
-const CODE = [
-  'import torch, timm',
-  'model = create_model("vit_s16")',
-  'for epoch in range(20):',
-  '    loss = train(model, faces_140k)',
-  '    acc  = evaluate(model)  # 0.995',
-  'explain(model, method="grad-cam")',
-  'deploy(model, ["api","web","app"])'
+// Lo-fi hero scene: the developer types love.js, hearts float up, build passes, repeat.
+const NS = 'http://www.w3.org/2000/svg';
+const X0 = 142, Y0 = 101, LH = 12;
+const LINES = [
+  [['k', 'const '], ['', 'dev = {']],
+  [['', '  '], ['p', 'name'], ['', ': '], ['s', '"Abrham Assefa"'], ['', ',']],
+  [['', '  '], ['p', 'loves'], ['', ': ['], ['s', '"AI"'], ['', ', '], ['s', '"code"'], ['', ', '], ['s', '"coffee"'], ['', '],']],
+  [['', '  '], ['p', 'stack'], ['', ': ['], ['s', '"React"'], ['', ', '], ['s', '"PyTorch"'], ['', '],']],
+  [['', '};']],
+  [['k', 'while '], ['', '(dev.'], ['f', 'isAwake'], ['', '()) {']],
+  [['', '  dev.'], ['f', 'code'], ['', '(); dev.'], ['f', 'learn'], ['', '();']],
+  [['', '  dev.'], ['f', 'ship'], ['', '('], ['s', '"with ♥"'], ['', ');']],
+  [['', '}']],
+  [['c', '// made with love in Verona']]
 ];
-const SAMPLES = [
-  { label: 'REAL · 0.996', fake: false, conf: '0.996' },
-  { label: 'AI-GEN · 0.981', fake: true, conf: '0.981' },
-  { label: 'REAL · 0.989', fake: false, conf: '0.989' }
-];
-const LAYERS = [3, 5, 5, 2];
+const GLYPHS = ['</>', '{ }', 'AI', '♥', '=>', '()'];
+const HEART = 'M0 -3c-1.5-3-8-3-8 2.5 0 4 5 6.5 8 9.5 3-3 8-5.5 8-9.5 0-5.5-6.5-5.5-8-2.5z';
 
-const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
-function highlight(line) {
-  const ci = line.indexOf('#');
-  const code = ci >= 0 ? line.slice(0, ci) : line;
-  const comment = ci >= 0 ? line.slice(ci) : '';
-  let h = esc(code)
-    .replace(/("[^"]*"?)/g, '<span class="tk-s">$1</span>')
-    .replace(/\b(import|for|in|range)\b/g, '<span class="tk-k">$1</span>')
-    .replace(/\b(\d+(?:\.\d+)?)\b(?![^<]*<\/span>)/g, '<span class="tk-n">$1</span>')
-    .replace(/\b(train|evaluate|explain|deploy|create_model)(?=\()/g, '<span class="tk-f">$1</span>');
-  return h + (comment ? `<span class="tk-c">${esc(comment)}</span>` : '');
-}
+const el = (tag, attrs = {}, parent) => {
+  const n = document.createElementNS(NS, tag);
+  for (const k in attrs) n.setAttribute(k, attrs[k]);
+  parent && parent.appendChild(n);
+  return n;
+};
+const lineLen = (t) => t.reduce((a, [, s]) => a + s.length, 0);
 
-function buildNet(svg) {
-  const W = 200, H = 130, nodes = [];
-  LAYERS.forEach((n, li) => {
-    const x = 18 + (li * (W - 36)) / (LAYERS.length - 1);
-    const layer = [];
-    for (let i = 0; i < n; i++) layer.push({ x, y: H / 2 + (i - (n - 1) / 2) * 24 });
-    nodes.push(layer);
-  });
-  let edges = '', pulses = '', circles = '';
-  nodes.forEach((layer, li) => {
-    if (li < nodes.length - 1) layer.forEach((a, ai) => nodes[li + 1].forEach((b, bi) => {
-      const d = `M${a.x} ${a.y}L${b.x} ${b.y}`;
-      edges += `<path class="edge" d="${d}"/>`;
-      pulses += `<path class="pulse" pathLength="100" data-e="${li}-${ai}-${bi}" d="${d}"/>`;
-    }));
-    layer.forEach((n, i) => {
-      circles += `<circle class="node${li === nodes.length - 1 ? ' out' : ''}" data-n="${li}-${i}" cx="${n.x}" cy="${n.y}" r="${li === nodes.length - 1 ? 6 : 4.5}"/>`;
-    });
-  });
-  svg.innerHTML = edges + pulses + circles;
-}
-
-function buildDetect(svg) {
-  // stylized face + landmarks; heat blob = Grad-CAM style explanation
-  const lms = [[82, 58], [118, 58], [100, 74], [88, 92], [100, 95], [112, 92], [70, 64], [130, 64], [100, 112], [76, 84], [124, 84]];
-  svg.innerHTML = `
-    <defs><radialGradient id="vz-heat"><stop offset="0" stop-color="#FF4D6D"/><stop offset=".5" stop-color="#FF7A1A" stop-opacity=".6"/><stop offset="1" stop-color="#FF7A1A" stop-opacity="0"/></radialGradient></defs>
-    <ellipse class="heat" cx="100" cy="74" rx="44" ry="34" fill="url(#vz-heat)"/>
-    <path class="face" d="M100 26c-26 0-40 20-40 46 0 30 18 52 40 52s40-22 40-52c0-26-14-46-40-46Z"/>
-    <path class="face" d="M60 70c-5 0-6 14 1 16M140 70c5 0 6 14-1 16"/>
-    <path class="mesh" pathLength="100" d="M70 64 82 58 100 74 118 58 130 64M82 58 76 84 88 92 100 95 112 92 124 84 118 58M100 74 88 92M100 74 112 92M88 92 100 112 112 92"/>
-    ${lms.map(([x, y], i) => `<circle class="lm" data-i="${i}" cx="${x}" cy="${y}" r="2.2"/>`).join('')}
-    <rect class="box" x="52" y="20" width="96" height="112" rx="3"/>`;
-  return lms.length;
+function render(text, tokens, n) {
+  text.textContent = '';
+  for (const [cls, s] of tokens) {
+    if (n <= 0) break;
+    const ts = el('tspan', cls ? { class: 'tk-' + cls } : {}, text);
+    ts.textContent = s.slice(0, n);
+    n -= s.length;
+  }
 }
 
 export function initHeroViz() {
-  const root = $('.ai-viz');
-  if (!root) return;
-  const codeEl = $('#viz-code'), net = $('#viz-net'), det = $('.viz-detect'), pred = $('#viz-pred');
-  const acc = $('#viz-acc'), loss = $('#viz-loss'), accV = $('#viz-acc-v'), lossV = $('#viz-loss-v');
-  const prog = $('#viz-prog'), epoch = $('#viz-epoch'), conf = $('#viz-conf'), deploys = root.querySelectorAll('.viz-deploy i');
-  buildNet(net);
-  const lmCount = buildDetect($('#viz-detect'));
-  const lms = root.querySelectorAll('.lm');
+  const scene = $('.dev-scene');
+  if (!scene) return;
+  const code = $('#dev-code', scene), gutter = $('#dev-gutter', scene), caret = $('#dev-caret', scene);
+  const toast = $('#dev-toast', scene), fx = $('#dev-fx', scene);
+  const commitsEl = $('#dev-commits', scene), stateEl = $('#dev-state');
+  let commits = 1284;
 
-  const setTrain = (t) => { // t: 0..1
-    const e = Math.round(t * 20);
-    epoch.textContent = `epoch ${String(e).padStart(2, '0')}/20`;
-    prog.style.width = `${t * 100}%`;
-    acc.style.setProperty('--draw', 100 - t * 100);
-    loss.style.setProperty('--draw', 100 - t * 100);
-    accV.textContent = `${(50 + 49.5 * (1 - Math.pow(1 - t, 3))).toFixed(1)}%`;
-    lossV.textContent = (2.31 * Math.pow(1 - t, 2.4) + 0.04 * t).toFixed(2);
+  const texts = LINES.map((_, i) => {
+    const y = Y0 + i * LH;
+    el('text', { x: 134, y }, gutter).textContent = i + 1;
+    return el('text', { x: X0, y }, code);
+  });
+  const placeCaret = (i) => {
+    caret.setAttribute('x', X0 + texts[i].getComputedTextLength() + 1);
+    caret.setAttribute('y', Y0 + i * LH - 8);
   };
 
-  // static final state for reduced motion
   if (reducedMotion()) {
-    codeEl.innerHTML = CODE.map(highlight).join('\n');
-    setTrain(1);
-    lms.forEach((l) => l.classList.add('on'));
-    det.classList.add('boxed', 'meshed', 'explained');
-    deploys.forEach((d) => d.classList.add('on'));
+    LINES.forEach((t, i) => render(texts[i], t, Infinity));
+    placeCaret(LINES.length - 1);
+    toast.classList.add('on');
+    stateEl && (stateEl.textContent = 'shipped ♥');
     return;
   }
 
-  let visible = true, timers = [], sample = 0;
-  const wait = (ms) => new Promise((r) => timers.push(setTimeout(r, ms)));
-  const waitVisible = async () => { while (!visible || document.hidden) await wait(400); };
-
-  const firePath = () => {
-    // random forward pass through the network
-    let prev = Math.floor(Math.random() * LAYERS[0]);
-    const nodeOn = (l, i) => {
-      const n = net.querySelector(`[data-n="${l}-${i}"]`);
-      n?.classList.add('on');
-      setTimeout(() => n?.classList.remove('on'), 500);
-    };
-    nodeOn(0, prev);
-    for (let l = 0; l < LAYERS.length - 1; l++) {
-      const next = Math.floor(Math.random() * LAYERS[l + 1]);
-      const p = net.querySelector(`[data-e="${l}-${prev}-${next}"]`);
-      const nl = l + 1, ni = next;
-      setTimeout(() => {
-        if (!p) return;
-        p.classList.remove('go'); void p.getBBox(); p.classList.add('go');
-        setTimeout(() => nodeOn(nl, ni), 450);
-      }, l * 420);
-      prev = next;
-    }
+  let visible = true;
+  const waiters = [];
+  const setVisible = (v) => {
+    visible = v && !document.hidden;
+    scene.classList.toggle('paused', !visible);
+    if (visible) while (waiters.length) waiters.shift()();
   };
-  let fireTimer = setInterval(() => { if (visible && !document.hidden) firePath(); }, 260);
+  new IntersectionObserver(([e]) => setVisible(e.isIntersecting), { threshold: 0.05 }).observe(scene);
+  document.addEventListener('visibilitychange', () => setVisible(scene.getBoundingClientRect().bottom > 0));
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
+    .then(() => (visible ? null : new Promise((r) => waiters.push(r))));
 
-  const cycle = async () => {
+  const spawn = (x, y, glyph) => {
+    const g = el('g', { transform: `translate(${x} ${y})` }, fx);
+    const node = glyph
+      ? el('text', { class: 'fx fx-glyph', 'text-anchor': 'middle' }, g)
+      : el('path', { class: 'fx fx-heart', d: HEART }, g);
+    if (glyph) node.textContent = glyph;
+    node.style.setProperty('--dx', `${(Math.random() * 40 - 20).toFixed(0)}px`);
+    node.style.setProperty('--rot', `${(Math.random() * 40 - 20).toFixed(0)}deg`);
+    if (!glyph) node.style.scale = (0.55 + Math.random() * 0.5).toFixed(2);
+    node.addEventListener('animationend', () => g.remove());
+  };
+  setInterval(() => {
+    if (!visible || !scene.classList.contains('typing')) return;
+    const glyph = Math.random() < 0.45 ? GLYPHS[(Math.random() * GLYPHS.length) | 0] : null;
+    spawn(130 + Math.random() * 220, 64, glyph);
+  }, 650);
+
+  (async function loop() {
     for (;;) {
-      await waitVisible();
-      // reset
-      codeEl.innerHTML = '';
-      setTrain(0);
-      lms.forEach((l) => l.classList.remove('on'));
-      det.classList.remove('boxed', 'meshed', 'explained');
-      deploys.forEach((d) => d.classList.remove('on'));
-
-      // 1. type code
-      let typed = [];
-      for (const line of CODE) {
-        typed.push('');
-        for (let c = 1; c <= line.length; c++) {
-          typed[typed.length - 1] = line.slice(0, c);
-          codeEl.innerHTML = typed.map(highlight).join('\n');
-          await wait(line.startsWith('    ') && c < 4 ? 0 : 22);
+      texts.forEach((t) => { t.classList.remove('fade'); t.textContent = ''; });
+      toast.classList.remove('on');
+      scene.classList.add('typing');
+      stateEl && (stateEl.textContent = 'coding…');
+      for (let i = 0; i < LINES.length; i++) {
+        const total = lineLen(LINES[i]);
+        for (let n = 1; n <= total; n++) {
+          render(texts[i], LINES[i], n);
+          placeCaret(i);
+          const ch = texts[i].textContent.slice(-1);
+          await sleep(/[,;{(]/.test(ch) ? 110 : 18 + Math.random() * 40);
         }
-        await wait(120);
+        await sleep(120 + Math.random() * 160);
       }
-
-      // 2. train
-      const start = performance.now(), dur = 2600;
-      await new Promise((res) => {
-        const step = (now) => {
-          const t = Math.min(1, (now - start) / dur);
-          setTrain(t);
-          t < 1 ? requestAnimationFrame(step) : res();
-        };
-        requestAnimationFrame(step);
-      });
-
-      // 3. inference: landmarks → mesh → box + label → grad-cam
-      const s = SAMPLES[sample++ % SAMPLES.length];
-      pred.textContent = s.label;
-      pred.classList.toggle('fake', s.fake);
-      for (let i = 0; i < lmCount; i++) { lms[i].classList.add('on'); await wait(55); }
-      det.classList.add('meshed');
-      await wait(500);
-      det.classList.add('boxed');
-      conf.textContent = s.conf;
-      await wait(500);
-      det.classList.add('explained');
-
-      // 4. deploy
-      for (const d of deploys) { await wait(380); d.classList.add('on'); }
-      await wait(2600);
+      scene.classList.remove('typing');
+      stateEl && (stateEl.textContent = 'build passed ✓');
+      await sleep(350);
+      toast.classList.add('on');
+      scene.classList.add('happy');
+      commitsEl.textContent = ++commits;
+      for (let k = 0; k < 9; k++) setTimeout(() => spawn(150 + Math.random() * 180, 66 + Math.random() * 6, k % 3 ? null : '♥'), k * 90);
+      await sleep(3200);
+      scene.classList.remove('happy');
+      texts.forEach((t, i) => setTimeout(() => t.classList.add('fade'), i * 40));
+      await sleep(700);
     }
-  };
-
-  new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(root);
-  cycle();
-  addEventListener('pagehide', () => { clearInterval(fireTimer); timers.forEach(clearTimeout); });
+  })();
 }

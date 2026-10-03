@@ -125,45 +125,108 @@
     </div>
 
     <div class="hero-visual reveal">
-      <div class="ai-viz" aria-label="Animated illustration: code trains a neural network, which detects faces and deploys to web and mobile" role="img">
-        <div class="viz-bar">
-          <span class="viz-dots"><i></i><i></i><i></i></span>
-          <span class="viz-file">~/abrham/pipeline.py</span>
-          <span class="viz-live"><b></b>LIVE</span>
-        </div>
-        <div class="viz-body">
-          <div class="viz-panel viz-code">
-            <div class="viz-label">01 · code</div>
-            <pre><code id="viz-code"></code><span class="viz-caret"></span></pre>
-          </div>
-          <div class="viz-panel viz-net">
-            <div class="viz-label">02 · model <span id="viz-layer">ViT-S/16</span></div>
-            <svg id="viz-net" viewBox="0 0 200 130" aria-hidden="true"></svg>
-          </div>
-          <div class="viz-panel viz-detect">
-            <div class="viz-label">03 · inference</div>
-            <svg id="viz-detect" viewBox="0 0 200 140" aria-hidden="true"></svg>
-            <span class="viz-pred" id="viz-pred">REAL · 0.996</span>
-          </div>
-          <div class="viz-panel viz-chart">
-            <div class="viz-label">04 · training</div>
-            <svg viewBox="0 0 160 80" preserveAspectRatio="none" aria-hidden="true">
-              <g class="chart-grid"><line x1="0" y1="20" x2="160" y2="20"/><line x1="0" y1="40" x2="160" y2="40"/><line x1="0" y1="60" x2="160" y2="60"/></g>
-              <path id="viz-acc" class="curve acc" pathLength="100" d="M0 74 C 20 50, 35 30, 60 20 S 110 9, 160 6"/>
-              <path id="viz-loss" class="curve loss" pathLength="100" d="M0 8 C 18 40, 40 58, 70 66 S 120 73, 160 75"/>
-            </svg>
-            <div class="viz-metrics"><span>acc <b id="viz-acc-v">0.0%</b></span><span>loss <b id="viz-loss-v">2.31</b></span></div>
-          </div>
-        </div>
-        <div class="viz-status">
-          <div class="viz-progress"><span id="viz-prog"></span></div>
-          <div class="viz-status-row">
-            <span id="viz-epoch">epoch 00/20</span>
-            <span class="viz-deploy"><i data-t="api">API</i><i data-t="web">Web</i><i data-t="mobile">Mobile</i></span>
-          </div>
-        </div>
+      <div class="dev-scene" role="img" aria-label="Animated illustration: Abrham coding at his desk late at night, hearts floating up from the screen as the build passes">
+        <svg viewBox="0 0 480 420" aria-hidden="true">
+          <defs>
+            <radialGradient id="ds-glow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="var(--s-k)" stop-opacity=".55"/><stop offset="1" stop-color="var(--s-k)" stop-opacity="0"/></radialGradient>
+            <linearGradient id="ds-cone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFD58A" stop-opacity=".9"/><stop offset="1" stop-color="#FFD58A" stop-opacity="0"/></linearGradient>
+            <clipPath id="ds-sky"><rect x="26" y="40" width="72" height="84" rx="2"/></clipPath>
+          </defs>
+          <rect class="s-wall" width="480" height="420"/>
+          <!-- window -->
+          <rect class="s-winframe" x="20" y="34" width="84" height="96" rx="5"/>
+          <g clip-path="url(#ds-sky)">
+            <g class="sky-night">
+              <rect x="26" y="40" width="72" height="84" fill="#16223D"/>
+              <circle cx="76" cy="60" r="10" fill="#F5E9C8"/><circle cx="81" cy="56" r="9" fill="#16223D"/>
+              <circle class="star" cx="38" cy="54" r="1.2"/><circle class="star" cx="56" cy="76" r="1" style="animation-delay:-.8s"/>
+              <circle class="star" cx="86" cy="98" r="1.3" style="animation-delay:-1.6s"/><circle class="star" cx="44" cy="106" r="1" style="animation-delay:-2.2s"/>
+            </g>
+            <g class="sky-day">
+              <rect x="26" y="40" width="72" height="84" fill="#A9DBFA"/>
+              <g class="sun"><circle cx="76" cy="62" r="10" fill="#FFC94D"/><circle cx="76" cy="62" r="15" fill="#FFC94D" opacity=".25"/></g>
+              <g class="cloud"><ellipse cx="44" cy="96" rx="13" ry="6" fill="#fff"/><circle cx="40" cy="91" r="6" fill="#fff"/><circle cx="49" cy="90" r="7" fill="#fff"/></g>
+            </g>
+          </g>
+          <path class="s-winbar" d="M62 40v84M26 82h72"/>
+          <rect class="s-winframe" x="16" y="128" width="92" height="6" rx="2"/>
+          <!-- poster -->
+          <g class="poster"><rect class="s-poster" x="392" y="22" width="64" height="56" rx="3"/>
+            <text x="424" y="50" text-anchor="middle" class="s-poster-t">&lt;/&gt;</text>
+            <path class="s-heart" d="M424 66c-1-2-6-2-6 2 0 3 4 5 6 7 2-2 6-4 6-7 0-4-5-4-6-2z"/></g>
+          <!-- shelf -->
+          <rect class="s-wood" x="388" y="118" width="80" height="5" rx="1"/>
+          <rect x="396" y="98" width="8" height="20" fill="#5B8DEF"/><rect x="405" y="102" width="7" height="16" fill="var(--s-k)"/><rect x="413" y="96" width="9" height="22" fill="#3FA66B"/>
+          <g class="vine"><rect class="s-pot" x="440" y="104" width="16" height="14" rx="2"/>
+            <path class="s-leaf" d="M444 104c-6 8-2 20-8 30M452 104c4 10 0 18 6 28"/><circle class="s-leafc" cx="437" cy="122" r="3"/><circle class="s-leafc" cx="436" cy="133" r="3"/><circle class="s-leafc" cx="457" cy="122" r="3"/><circle class="s-leafc" cx="458" cy="131" r="3"/></g>
+          <!-- screen glow -->
+          <ellipse class="s-glow" cx="240" cy="160" rx="190" ry="130" fill="url(#ds-glow)"/>
+          <!-- monitor -->
+          <rect class="s-frame" x="108" y="66" width="264" height="180" rx="10"/>
+          <rect class="s-screen" x="116" y="74" width="248" height="160" rx="4"/>
+          <rect class="s-bar" x="116" y="74" width="248" height="14" rx="4"/>
+          <circle cx="126" cy="81" r="2.6" fill="#FF5F57"/><circle cx="135" cy="81" r="2.6" fill="#FEBC2E"/><circle cx="144" cy="81" r="2.6" fill="#28C840"/>
+          <text x="160" y="84" class="s-tab">love.js <tspan class="tk-k">♥</tspan></text>
+          <g id="dev-gutter" class="s-gutter"></g>
+          <g id="dev-code" class="s-code"></g>
+          <rect id="dev-caret" class="s-caret" x="142" y="92" width="5" height="9"/>
+          <rect class="s-bar" x="116" y="222" width="248" height="12"/>
+          <text x="122" y="230.5" class="s-status">⎇ main   ♥ <tspan id="dev-commits">1284</tspan> commits   UTF-8</text>
+          <g id="dev-toast" class="s-toast"><rect x="262" y="222" width="102" height="12" rx="2"/><text x="313" y="230.5" text-anchor="middle">✓ build passed · 0 bugs ♥</text></g>
+          <rect class="sticky" x="346" y="52" width="30" height="26" rx="1"/><text x="361" y="63" text-anchor="middle" class="sticky-t">ship</text><text x="361" y="72" text-anchor="middle" class="sticky-t">it ♥</text>
+          <rect class="s-frame" x="228" y="246" width="24" height="36"/>
+          <rect class="s-frame" x="196" y="280" width="88" height="8" rx="3"/>
+          <!-- desk -->
+          <rect class="s-desktop" x="0" y="288" width="480" height="12"/>
+          <rect class="s-desk" x="0" y="300" width="480" height="120"/>
+          <path class="s-deskline" d="M20 330h120M340 330h120"/>
+          <!-- lamp -->
+          <path class="s-cone" d="M396 196 L330 288 L452 288 Z" fill="url(#ds-cone)"/>
+          <g class="s-lamp"><rect x="434" y="282" width="28" height="7" rx="3"/><path d="M448 284 L436 214 L404 194" fill="none" stroke-width="4" stroke-linecap="round"/><path d="M388 196 l14 -16 18 12 -8 14z"/></g>
+          <!-- plant -->
+          <g class="sway"><path class="s-leaf" d="M38 264c-10-10-12-24-4-30M38 264c2-14 8-22 16-24M38 264c-4-10 2-26 2-34"/>
+            <ellipse class="s-leafc" cx="34" cy="234" rx="5" ry="8"/><ellipse class="s-leafc" cx="54" cy="240" rx="5" ry="8" transform="rotate(40 54 240)"/><ellipse class="s-leafc" cx="40" cy="228" rx="4" ry="8"/></g>
+          <rect class="s-pot" x="26" y="262" width="26" height="26" rx="3"/>
+          <!-- coffee -->
+          <g class="steam"><path d="M70 262c-4-6 4-10 0-16"/><path d="M78 260c-4-6 4-10 0-16" style="animation-delay:-.7s"/><path d="M86 262c-4-6 4-10 0-16" style="animation-delay:-1.4s"/></g>
+          <rect class="s-mug" x="64" y="266" width="28" height="22" rx="3"/><path class="s-mugh" d="M92 271c8 0 8 12 0 12"/>
+          <path class="s-heart" d="M78 274c-1-2-5-2-5 1.5 0 2.5 3.5 4 5 6 1.5-2 5-3.5 5-6 0-3.5-4-3.5-5-1.5z"/>
+          <!-- cat -->
+          <g class="cat"><ellipse class="s-cat" cx="378" cy="278" rx="27" ry="11"/>
+            <path class="s-cat tail" d="M402 282c14 2 18-10 10-14" fill="none" stroke-width="5" stroke-linecap="round"/>
+            <circle class="s-cat" cx="352" cy="274" r="11"/><path class="s-cat" d="M344 266l1-9 6 6zM355 263l6-6 1 9z"/>
+            <path class="s-catface" d="M346 275q2 2 4 0M354 275q2 2 4 0"/>
+            <text class="zzz" x="356" y="256">z</text><text class="zzz" x="362" y="248" style="animation-delay:-1.2s">z</text></g>
+          <!-- keyboard + hands -->
+          <rect class="s-kb" x="170" y="289" width="140" height="8" rx="2"/>
+          <!-- developer (back view) -->
+          <g class="dev">
+            <path class="s-hoodie2" d="M172 352 Q140 326 176 296 L194 300 Q170 326 192 346 Z"/>
+            <path class="s-hoodie2" d="M308 352 Q340 326 304 296 L286 300 Q310 326 288 346 Z"/>
+            <ellipse class="s-skin hand hl" cx="190" cy="296" rx="9" ry="5"/>
+            <ellipse class="s-skin hand hr" cx="290" cy="296" rx="9" ry="5"/>
+            <g class="torso">
+              <path class="s-hoodie" d="M146 420 C146 362 176 330 240 328 C304 330 334 362 334 420 Z"/>
+              <path class="s-hoodie2" d="M204 334 C210 352 270 352 276 334 C266 326 214 326 204 334 Z"/>
+              <path class="s-hoodline" d="M240 352 V420"/>
+              <rect class="s-skin2" x="228" y="300" width="24" height="34" rx="6"/>
+              <g class="head">
+                <ellipse class="s-skin" cx="209" cy="290" rx="5" ry="7"/><ellipse class="s-skin" cx="271" cy="290" rx="5" ry="7"/>
+                <circle class="s-hair" cx="240" cy="282" r="30"/>
+                <g class="s-hair"><circle cx="222" cy="262" r="8"/><circle cx="238" cy="255" r="9"/><circle cx="256" cy="261" r="8"/><circle cx="215" cy="278" r="7"/><circle cx="265" cy="278" r="7"/></g>
+                <path class="s-phones" d="M205 284 A35 35 0 0 1 275 284" fill="none" stroke-width="6"/>
+                <rect class="s-phones" x="199" y="276" width="13" height="24" rx="5"/><rect class="s-phones" x="268" y="276" width="13" height="24" rx="5"/>
+                <rect x="201" y="282" width="3" height="12" rx="1.5" fill="var(--s-k)"/><rect x="276" y="282" width="3" height="12" rx="1.5" fill="var(--s-k)"/>
+              </g>
+            </g>
+          </g>
+          <!-- chair back -->
+          <rect class="s-chair" x="178" y="372" width="124" height="60" rx="16"/>
+          <rect class="s-chair2" x="190" y="382" width="100" height="6" rx="3"/>
+          <g id="dev-fx"></g>
+        </svg>
         <div class="float-tag tag-a">class: <b>full-stack + AI</b></div>
-        <div class="float-tag tag-b">conf: <b id="viz-conf">0.99</b></div>
+        <div class="float-tag tag-b">status: <b id="dev-state">coding…</b></div>
         <div class="float-tag tag-c">React · Flutter · PyTorch</div>
       </div>
     </div>

@@ -91,6 +91,8 @@ section{padding:120px 0;position:relative;}
 .tag-a{top:-14px;left:22px;}
 .tag-c{top:-14px;right:22px;animation-delay:-3.2s;}
 .tag-b{bottom:-14px;right:22px;animation-delay:-1.6s;}
+[data-theme="light"] .float-tag{background:rgba(255,255,255,0.92);color:#141A22;border-color:rgba(232,98,10,0.45);box-shadow:0 8px 22px -12px rgba(20,26,34,.35);}
+[data-theme="light"] .float-tag b{color:#D9560A;}
 @keyframes bob{50%{transform:translateY(-6px);}}
 
 .scroll-cue{
