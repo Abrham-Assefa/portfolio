@@ -363,7 +363,7 @@
         <h2 aria-label="Code that sees, learns and ships.">Code that
           <span class="wk-rot" aria-hidden="true"><span class="wk-track"><span>sees.</span><span>learns.</span><span>ships.</span><span>sees.</span></span></span>
         </h2>
-        <p class="section-sub">From research notebooks to production apps — filter, search, or open any card for the full story.</p>
+        <p class="section-sub">From research notebooks to production apps — hover a project to preview it, click for the full case study.</p>
       </div>
       <div class="work-log glass reveal" aria-label="Project summary">
         <div class="wl-bar-top"><i></i><i></i><i></i><span>~/projects</span></div>
@@ -371,17 +371,11 @@
       </div>
     </div>
 
-    <div class="proj-toolbar reveal">
-      <div class="proj-filter" role="toolbar" aria-label="Filter projects"></div>
-      <label class="proj-search">
-        <span class="visually-hidden">Search projects</span>
-        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        <input type="search" id="proj-search" placeholder="Search e.g. PyTorch, Flutter…" autocomplete="off">
-      </label>
+    <div class="px-status" aria-live="polite"></div>
+    <div class="px reveal" id="proj-explorer">
+      <ol class="px-list" id="px-list"></ol>
+      <aside class="px-panel glass" id="px-panel" aria-live="polite"></aside>
     </div>
-    <p class="proj-count" aria-live="polite"></p>
-
-    <div class="proj-grid" id="proj-grid"></div>
     <noscript>
       <p>Enable JavaScript to browse projects, or visit <a href="https://github.com/Abrham-Assefa">github.com/Abrham-Assefa</a>.</p>
     </noscript>

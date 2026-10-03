@@ -20,8 +20,6 @@
 .js .tilt.reveal.in{transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));}
 .js .tilt.reveal.in:not(.is-tilting){transition:opacity .8s var(--ease-out),transform .4s var(--ease-out),border-color .25s ease;}
 
-.proj-card.enter{animation:cardIn .5s var(--ease-out) both;animation-delay:var(--d,0ms);}
-@keyframes cardIn{from{opacity:0;transform:translateY(16px) scale(.98);}}
 
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto;}

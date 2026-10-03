@@ -1,6 +1,6 @@
 import { $, $$, finePointer, reducedMotion } from './utils.js';
 
-const INTERACTIVE = 'a, button, input, textarea, [role="option"], .proj-card, label';
+const INTERACTIVE = 'a, button, input, textarea, [role="option"], label';
 
 export function initCursor() {
   if (!finePointer() || reducedMotion()) return;
