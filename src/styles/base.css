@@ -1,0 +1,61 @@
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;scroll-padding-top:84px;}
+body{
+  margin:0;
+  background:var(--ink);
+  color:var(--paper);
+  font-family:var(--sans);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  transition:background-color .4s ease,color .4s ease;
+  overflow-x:hidden;
+}
+::selection{background:var(--signal);color:#0B1118;}
+a{color:inherit;text-decoration:none;}
+img,svg{max-width:100%;}
+button{font:inherit;color:inherit;}
+h1,h2,h3{text-wrap:balance;}
+p{text-wrap:pretty;}
+kbd{
+  font-family:var(--mono);font-size:10.5px;padding:2px 6px;border-radius:5px;
+  border:1px solid var(--line-strong);background:var(--ink-3);color:var(--paper-dim);
+}
+
+:focus-visible{outline:2px solid var(--signal);outline-offset:3px;border-radius:4px;}
+
+.skip-link{
+  position:fixed;top:-60px;left:16px;z-index:200;background:var(--signal);color:#0B1118;
+  padding:10px 16px;border-radius:8px;font-family:var(--mono);font-weight:700;font-size:13px;transition:top .2s;
+}
+.skip-link:focus{top:12px;}
+
+.visually-hidden{
+  position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;
+}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;position:relative;z-index:1;}
+
+/* ambient background */
+.bg-grid{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(var(--line) 1px,transparent 1px),
+    linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:64px 64px;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000 40%,transparent 90%);
+  -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000 40%,transparent 90%);
+}
+.bg-glow{
+  position:fixed;inset:-20vmax;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(40vmax 40vmax at 85% 5%,var(--glow-a),transparent 60%),
+    radial-gradient(35vmax 35vmax at 5% 60%,var(--glow-b),transparent 60%);
+  animation:drift 22s ease-in-out infinite alternate;
+}
+@keyframes drift{to{transform:translate3d(-3vmax,4vmax,0) rotate(6deg);}}
+
+.scroll-progress{position:fixed;top:0;left:0;right:0;height:2px;z-index:120;pointer-events:none;}
+.scroll-progress span{
+  display:block;height:100%;background:var(--grad);transform-origin:0 50%;transform:scaleX(0);
+}
