@@ -4,7 +4,7 @@ import { openProject, projectList } from './projects.js';
 
 const SECTIONS = [
   ['top', 'Home', '⌂'], ['about', 'About', '◉'], ['skills', 'Skills', '⚙'], ['projects', 'Projects', '▦'],
-  ['experience', 'Experience', '↗'], ['github', 'GitHub activity', '⌥'], ['contact', 'Contact', '✉']
+  ['experience', 'Experience', '↗'], ['github', 'GitHub activity', '⌥'], ['blog', 'Blog', '✎'], ['contact', 'Contact', '✉']
 ];
 
 function buildCommands() {
@@ -16,6 +16,7 @@ function buildCommands() {
     { group: 'Actions', label: 'Send an email', icon: '✉', run: () => (location.href = 'mailto:abrhamassefa759@gmail.com') },
     { group: 'Links', label: 'GitHub — Abrham-Assefa', icon: '⌥', run: () => open('https://github.com/Abrham-Assefa', '_blank', 'noopener') },
     { group: 'Links', label: 'GitHub — abrham-cyper', icon: '⌥', run: () => open('https://github.com/abrham-cyper', '_blank', 'noopener') },
+    { group: 'Links', label: 'Blog — all posts', icon: '✎', run: () => (location.href = './blog.html') },
     { group: 'Links', label: 'LinkedIn', icon: 'in', run: () => open('https://www.linkedin.com/in/abrham-assefa-1599b1251', '_blank', 'noopener') }
   ];
   const resume = $('.resume-btn');

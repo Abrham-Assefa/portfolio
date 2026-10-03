@@ -1,4 +1,5 @@
 import { $, EMAIL, copyEmail } from './utils.js';
+import { isConfigured, sendMessage } from '../lib/backend.js';
 
 const FORMSPREE_ID = (import.meta.env.VITE_FORMSPREE_ID || '').trim();
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -58,6 +59,32 @@ export function initContact() {
 
     const data = { name: form.elements.name.value.trim(), email: form.elements.email.value.trim(), message: msg.value.trim() };
 
+    const done = () => {
+      form.reset();
+      counter.textContent = `0 / ${msg.maxLength}`;
+      form.querySelectorAll('.field').forEach((f) => f.classList.remove('valid', 'invalid'));
+      touched.clear();
+      status.textContent = "Thanks! Your message was sent — I'll get back to you soon.";
+      status.classList.add('ok');
+    };
+
+    if (isConfigured) {
+      btn.disabled = true;
+      label.textContent = 'Sending…';
+      try {
+        await sendMessage(data);
+        done();
+        return;
+      } catch {
+        // fall through to Formspree / email
+      } finally {
+        btn.disabled = false;
+        label.textContent = 'Send message';
+      }
+    } else {
+      sendMessage(data).catch(() => {}); // keeps a local copy for the demo admin inbox
+    }
+
     if (!FORMSPREE_ID) {
       // No form backend configured: hand off to the visitor's email client.
       const subject = encodeURIComponent(`Portfolio contact from ${data.name}`);
@@ -77,12 +104,7 @@ export function initContact() {
         body: JSON.stringify({ ...data, _subject: `Portfolio contact from ${data.name}` })
       });
       if (!res.ok) throw new Error(String(res.status));
-      form.reset();
-      counter.textContent = `0 / ${msg.maxLength}`;
-      form.querySelectorAll('.field').forEach((f) => f.classList.remove('valid', 'invalid'));
-      touched.clear();
-      status.textContent = "Thanks! Your message was sent — I'll get back to you soon.";
-      status.classList.add('ok');
+      done();
     } catch {
       status.innerHTML = `Something went wrong. Please email me directly at <a href="mailto:${EMAIL}">${EMAIL}</a>.`;
       status.classList.add('error');
