@@ -69,6 +69,18 @@ export async function signIn(email, password) {
   return storeAuth(await authFetch('token?grant_type=password', { email, password }));
 }
 
+export async function updatePassword(password) {
+  const token = await validToken();
+  if (!token || token === 'local') throw new Error('Your session expired — please sign in again.');
+  const res = await fetch(`${URL_}/auth/v1/user`, {
+    method: 'PUT',
+    headers: { apikey: KEY, Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ password })
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.msg || data.error_description || data.message || `Auth error ${res.status}`);
+}
+
 export function enterDemo() {
   setSession({ local: true, email: 'demo@local' });
 }
