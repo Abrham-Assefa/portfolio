@@ -23,7 +23,15 @@ const md = (s) => DOMPurify.sanitize(marked.parse(s || '', { gfm: true }));
 const state = { tab: 'posts', posts: [], messages: [], msgFilter: 'all', openMsg: null };
 
 /* ---------------- login ---------------- */
-function renderLogin(error = '') {
+const friendlyAuthError = (msg = '') => {
+  if (/invalid login|invalid_grant|credentials/i.test(msg)) return 'Wrong email or password. Check for typos (0 vs O, 1 vs l) and try again.';
+  if (/missing email|missing password/i.test(msg)) return 'Please enter both your email and password.';
+  if (/email not confirmed/i.test(msg)) return 'This email is not confirmed yet in Supabase.';
+  if (/load failed|failed to fetch|network/i.test(msg)) return "Couldn't reach the server — check your connection and try again.";
+  return msg || 'Sign in failed.';
+};
+
+function renderLogin(error = '', email = '') {
   const setup = !db.isConfigured ? `
     <div class="adm-setup">
       <h3>Connect your database</h3>
@@ -43,8 +51,13 @@ function renderLogin(error = '') {
         <p class="adm-muted">Sign in to write posts and read messages from the contact form.</p>
         ${db.isConfigured ? `
         <form id="login-form" class="adm-form" novalidate>
-          <label>Email<input name="email" type="email" autocomplete="username" required></label>
-          <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+          <label>Email<input name="email" type="email" autocomplete="username" autocapitalize="off" spellcheck="false" required value="${escapeHtml(email)}"></label>
+          <label>Password
+            <span class="adm-pw">
+              <input name="password" type="password" autocomplete="current-password" required>
+              <button type="button" class="adm-pw-toggle" aria-label="Show password" aria-pressed="false">Show</button>
+            </span>
+          </label>
           <p class="adm-error" role="alert">${escapeHtml(error)}</p>
           <button class="btn btn-primary" type="submit"><span class="btn-label">Sign in</span></button>
         </form>` : `
@@ -54,19 +67,80 @@ function renderLogin(error = '') {
     </section>`;
   $('#demo-btn')?.addEventListener('click', () => { db.enterDemo(); boot(); });
   const form = $('#login-form');
+  if (form) bindPwToggle(form);
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const btn = $('button', form);
+    const emailVal = form.email.value.trim().toLowerCase();
+    const pw = form.password.value.trim();
+    if (!emailVal || !pw) { $('.adm-error', form).textContent = friendlyAuthError('missing email'); return; }
+    const btn = $('button[type=submit]', form);
     btn.disabled = true;
     $('.btn-label', btn).textContent = 'Signing in…';
     try {
-      await db.signIn(form.email.value.trim(), form.password.value);
+      await db.signIn(emailVal, pw);
       boot();
     } catch (err) {
-      renderLogin(err.message || 'Sign in failed.');
+      renderLogin(friendlyAuthError(err.message), emailVal);
     }
   });
-  form?.email.focus();
+  if (form) (email ? form.password : form.email).focus();
+}
+
+function bindPwToggle(scope) {
+  $$('.adm-pw-toggle', scope).forEach((t) => t.addEventListener('click', () => {
+    const input = t.previousElementSibling;
+    const show = input.type === 'password';
+    input.type = show ? 'text' : 'password';
+    t.textContent = show ? 'Hide' : 'Show';
+    t.setAttribute('aria-pressed', String(show));
+    t.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+    input.focus();
+  }));
+}
+
+function openPasswordDialog() {
+  const dlg = document.createElement('dialog');
+  dlg.className = 'adm-dialog glass';
+  dlg.innerHTML = `
+    <form method="dialog" class="adm-form" novalidate>
+      <h3>Change password</h3>
+      <label>New password
+        <span class="adm-pw"><input name="pw" type="password" autocomplete="new-password" minlength="8" required><button type="button" class="adm-pw-toggle" aria-label="Show password">Show</button></span>
+      </label>
+      <label>Confirm password
+        <span class="adm-pw"><input name="pw2" type="password" autocomplete="new-password" required><button type="button" class="adm-pw-toggle" aria-label="Show password">Show</button></span>
+      </label>
+      <p class="adm-error" role="alert"></p>
+      <div class="adm-dialog-actions">
+        <button class="btn btn-ghost" type="button" data-cancel>Cancel</button>
+        <button class="btn btn-primary" type="submit"><span class="btn-label">Save password</span></button>
+      </div>
+    </form>`;
+  document.body.append(dlg);
+  const f = $('form', dlg);
+  const err = $('.adm-error', f);
+  bindPwToggle(f);
+  const close = () => { dlg.close(); dlg.remove(); };
+  $('[data-cancel]', f).onclick = close;
+  dlg.addEventListener('cancel', (e) => { e.preventDefault(); close(); });
+  f.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const pw = f.pw.value.trim();
+    if (pw.length < 8) { err.textContent = 'Use at least 8 characters.'; return; }
+    if (pw !== f.pw2.value.trim()) { err.textContent = "Passwords don't match."; return; }
+    const btn = $('button[type=submit]', f);
+    btn.disabled = true;
+    try {
+      await db.updatePassword(pw);
+      close();
+      toast('Password updated — use it next time you sign in.');
+    } catch (ex) {
+      btn.disabled = false;
+      err.textContent = ex.message || 'Could not update password.';
+    }
+  });
+  dlg.showModal();
+  f.pw.focus();
 }
 
 /* ---------------- dashboard shell ---------------- */
@@ -100,6 +174,7 @@ function renderShell() {
           <span class="adm-badge ${user.local ? 'demo' : 'live'}">${user.local ? 'Demo mode' : 'Live · Supabase'}</span>
           <span class="adm-muted">${escapeHtml(user.email)}</span>
           <a class="btn btn-ghost" href="./blog.html" target="_blank" rel="noopener">View blog ↗</a>
+          ${user.local ? '' : '<button class="btn btn-ghost" id="change-pw" type="button">Change password</button>'}
           <button class="btn btn-ghost" id="sign-out" type="button">Sign out</button>
         </div>
       </div>
@@ -116,6 +191,7 @@ function renderShell() {
       <div id="adm-panel" role="tabpanel"></div>
     </section>`;
   $('#sign-out').onclick = async () => { await db.signOut(); renderLogin(); };
+  $('#change-pw')?.addEventListener('click', openPasswordDialog);
   $$('.adm-tabs [data-tab]').forEach((b) => b.addEventListener('click', () => { state.tab = b.dataset.tab; renderShell(); }));
   state.tab === 'posts' ? renderPosts() : renderMessages();
 }
