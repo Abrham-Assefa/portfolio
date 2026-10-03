@@ -4,6 +4,7 @@ import './styles/components.css';
 import './styles/sections.css';
 import './styles/hero-viz.css';
 import './styles/dev3d.css';
+import './styles/blog.css';
 import './styles/animations.css';
 
 import { $ } from './modules/utils.js';
@@ -20,6 +21,7 @@ import { initSkills } from './modules/skills.js';
 import { initGitHub } from './modules/github.js';
 import { initContact } from './modules/contact.js';
 import { initPalette } from './modules/palette.js';
+import { initBlog } from './modules/blog.js';
 
 // Show the résumé button only when public/resume.pdf is actually deployed.
 async function initResume() {
@@ -45,6 +47,7 @@ initCounters();
 initContact();
 initPalette();
 initGitHub();
+initBlog();
 initHeroCanvas();
 initHeroViz();
 initDev3d();

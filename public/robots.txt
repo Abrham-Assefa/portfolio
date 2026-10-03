@@ -1,3 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /portfolio/admin.html
+Disallow: /admin.html
 Sitemap: https://abrham-assefa.github.io/portfolio/sitemap.xml
