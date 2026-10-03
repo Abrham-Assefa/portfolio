@@ -348,7 +348,6 @@ dialog{color:var(--paper);}
 
 
 /* GitHub: profile link */
-.gh-more{display:flex;justify-content:center;margin-top:28px;}
 
 /* Skills: infinite tech-stack marquee */
 .stack-marquee{display:grid;gap:12px;margin:-8px 0 44px;
