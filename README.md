@@ -10,7 +10,7 @@ Interactive portfolio built with **Vite + vanilla JS/CSS** (no framework, ~25 KB
 - Skills visualization, experience & education timeline
 - Live GitHub stats & repos (cached, with offline fallback)
 - Contact form with validation (Formspree or mailto fallback)
-- Command palette (`⌘/Ctrl + K` or `/`), back-to-top, reveal animations
+- Command palette (`⌘/Ctrl + K` or `/`), back-to-top, two-way scroll animations (replay when scrolling down and up) with hero parallax
 - SEO / Open Graph / JSON-LD, accessible markup, respects `prefers-reduced-motion`
 
 ## Develop
