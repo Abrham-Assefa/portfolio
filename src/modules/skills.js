@@ -12,6 +12,15 @@ const domains = [
 ];
 
 export function initSkills() {
+  // infinite marquee: two rows, opposite directions; content duplicated for a seamless loop
+  const all = skills.flatMap((s) => s.tags.map((t) => [t, s.id]));
+  const pill = ([t, id]) => `<span class="mq-pill mq-${id}"><i></i>${escapeHtml(t)}</span>`;
+  const half = Math.ceil(all.length / 2);
+  [['#mq-a', all.slice(0, half)], ['#mq-b', all.slice(half)]].forEach(([sel, items]) => {
+    const el = $(sel);
+    if (el) el.innerHTML = (items.map(pill).join('')).repeat(2);
+  });
+
   const grid = $('#skills-grid');
   grid.innerHTML = skills.map((s) => {
     const tagHtml = s.tags.map((t) => {

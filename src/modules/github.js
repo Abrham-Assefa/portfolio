@@ -62,32 +62,6 @@ function repoCard(r) {
     </article>`;
 }
 
-function setStat(key, val) {
-  const el = document.querySelector(`[data-gh="${key}"]`);
-  if (!el) return;
-  if (typeof val === 'number') {
-    el.dataset.suffix = '';
-    animateCount(el, val);
-  } else el.textContent = val;
-}
-
-function renderLangs(repos) {
-  const counts = {};
-  repos.forEach((r) => { if (r.language) counts[r.language] = (counts[r.language] || 0) + 1; });
-  const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-  const top = entries.slice(0, 6);
-  const other = entries.slice(6).reduce((a, [, n]) => a + n, 0);
-  if (other) top.push(['Other', other]);
-  const total = top.reduce((a, [, n]) => a + n, 0) || 1;
-  const bar = $('#gh-langs');
-  bar.innerHTML = top.map(([l, n]) => `<i style="background:${color(l)};flex-grow:${n}" title="${escapeHtml(l)}: ${n} repos"></i>`).join('');
-  bar.setAttribute('role', 'img');
-  bar.setAttribute('aria-label', 'Languages: ' + top.map(([l, n]) => `${l} ${Math.round((n / total) * 100)}%`).join(', '));
-  bar.insertAdjacentHTML('afterend', `<div class="gh-lang-legend">${top.map(([l, n]) =>
-    `<span><i style="background:${color(l)}"></i>${escapeHtml(l)} ${Math.round((n / total) * 100)}%</span>`).join('')}</div>`);
-  return entries[0]?.[0];
-}
-
 export function initGitHub() {
   const section = $('#github');
   const grid = $('#gh-grid');
@@ -100,12 +74,6 @@ export function initGitHub() {
     try {
       const { user, repos } = await fetchData();
       const own = repos.filter((r) => !r.fork);
-      const stars = own.reduce((a, r) => a + (r.stargazers_count || 0), 0);
-      const topLang = renderLangs(own);
-      setStat('public_repos', user.public_repos);
-      setStat('followers', user.followers);
-      setStat('stars', stars);
-      setStat('top_lang', topLang === 'Jupyter Notebook' ? 'Jupyter' : topLang || '—');
       const repoStat = $('#repo-stat');
       if (repoStat && user.public_repos > Number(repoStat.dataset.count)) {
         repoStat.dataset.count = user.public_repos;
@@ -119,8 +87,6 @@ export function initGitHub() {
       note.textContent = `Live data from api.github.com · ${own.length} original repositories`;
     } catch (err) {
       grid.innerHTML = FALLBACK.map(repoCard).join('');
-      ['public_repos', 'followers', 'stars', 'top_lang'].forEach((k) => setStat(k, k === 'public_repos' ? '40+' : k === 'top_lang' ? 'Python' : '—'));
-      $('#gh-langs').hidden = true;
       note.textContent = 'GitHub API unavailable right now (rate limit or offline) — showing featured repositories.';
     }
     grid.setAttribute('aria-busy', 'false');

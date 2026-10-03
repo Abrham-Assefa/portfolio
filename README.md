@@ -8,7 +8,8 @@ Interactive portfolio built with **Vite + vanilla JS/CSS** (no framework, ~25 KB
 - Pinned scroll story: a CSS 3D laptop opens, types code, the tech stack orbits around it, then it ships
 - Filterable/searchable projects grid with detail modals (`#project/<slug>` deep links)
 - Skills visualization, experience & education timeline
-- Live GitHub stats & repos (cached, with offline fallback)
+- Live GitHub repos (cached, with offline fallback)
+- Scrolling tech-stack marquee in the Skills section
 - Contact form with validation (Formspree or mailto fallback)
 - Command palette (`⌘/Ctrl + K` or `/`), back-to-top, two-way scroll animations (replay when scrolling down and up) with hero parallax
 - SEO / Open Graph / JSON-LD, accessible markup, respects `prefers-reduced-motion`
