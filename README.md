@@ -6,7 +6,7 @@ Interactive portfolio built with **Vite + vanilla JS/CSS** (no framework, ~25 KB
 - Dark / light theme (remembers choice, `T` shortcut)
 - Animated hero: neural-net canvas background + illustrated "developer coding" scene (typing editor, floating hearts, day/night window that follows the theme)
 - Pinned scroll story: a CSS 3D laptop opens, types code, the tech stack orbits around it, then it ships
-- Project explorer: numbered list + sticky animated preview, domain filters, case-study modals (`#project/<slug>` deep links)
+- Projects: scroll-stacking flagship cards with animated visuals + "Also shipped" spotlight grid, case-study modals (`#project/<slug>` deep links)
 - Skills visualization, experience & education timeline
 - Live GitHub repos (cached, with offline fallback)
 - Scrolling tech-stack marquee in the Skills section
