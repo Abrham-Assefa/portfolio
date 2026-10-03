@@ -1,0 +1,36 @@
+/* Pinned scroll story: point-cloud face */
+section.face3d{padding:0;height:420vh;}
+.face3d-sticky{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;}
+.face3d-sticky::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 50% 60% at 66% 50%,var(--signal-soft),transparent 70%);
+}
+.face3d-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;}
+.face3d-steps{list-style:none;margin:0 auto;padding:0 24px;position:relative;height:100%;pointer-events:none;}
+.face3d-steps li{
+  position:absolute;top:50%;max-width:420px;opacity:0;transform:translateY(calc(-50% + 30px));filter:blur(6px);
+  transition:opacity .6s ease,transform .7s var(--ease-out),filter .6s ease;
+}
+.face3d-steps li.on{opacity:1;transform:translateY(-50%);filter:none;pointer-events:auto;}
+.face3d-steps h2{font-size:clamp(32px,4.4vw,56px);line-height:1.02;letter-spacing:-0.03em;margin:14px 0 16px;font-weight:800;}
+.face3d-steps .accent{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.face3d-steps p{color:var(--paper-dim);font-size:17px;line-height:1.6;margin:0 0 22px;}
+.face3d-hud span{position:absolute;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--paper-dimmer);text-transform:uppercase;}
+.face3d-hud b{color:var(--signal);font-weight:600;}
+.hud-tl{top:88px;right:calc(4vw + 140px);} .hud-tr{top:88px;right:4vw;}
+.hud-bl{bottom:34px;left:4vw;} .hud-br{bottom:34px;right:4vw;animation:bob 2.4s ease-in-out infinite;}
+.face3d-bar{position:absolute;left:4vw;right:4vw;bottom:24px;height:2px;background:var(--line);border-radius:2px;overflow:hidden;}
+.face3d-bar span{display:block;height:100%;background:var(--grad);transform-origin:left;transform:scaleX(0);}
+
+@media (max-width:900px){
+  section.face3d{height:360vh;}
+  .face3d-steps li{top:auto;bottom:64px;transform:translateY(30px);max-width:none;left:24px;right:24px;}
+  .face3d-steps li.on{transform:none;}
+  .face3d-steps h2{font-size:30px;margin:8px 0 8px;}
+  .face3d-steps p{font-size:14.5px;margin-bottom:14px;}
+  .face3d-sticky::after{content:'';position:absolute;inset:auto 0 0 0;height:55%;pointer-events:none;
+    background:linear-gradient(to top,var(--ink) 35%,transparent);}
+  .face3d-steps{z-index:1;}
+  .hud-tl{right:auto;left:24px;top:76px;} .hud-tr{top:76px;right:24px;}
+  .hud-bl,.hud-br{display:none;}
+}

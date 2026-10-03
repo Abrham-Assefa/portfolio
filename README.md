@@ -5,6 +5,7 @@ Interactive portfolio built with **Vite + vanilla JS/CSS** (no framework, ~25 KB
 ## Features
 - Dark / light theme (remembers choice, `T` shortcut)
 - Animated hero: neural-net canvas background + illustrated "developer coding" scene (typing editor, floating hearts, day/night window that follows the theme)
+- Pinned scroll story: a 7,000-point 3D cloud of my face assembles from noise, rotates under a CV scan (landmarks, box, attention heatmap), then morphs into a neural network
 - Filterable/searchable projects grid with detail modals (`#project/<slug>` deep links)
 - Skills visualization, experience & education timeline
 - Live GitHub stats & repos (cached, with offline fallback)
@@ -23,6 +24,7 @@ npm run preview
 ## Configuration
 - **Contact form:** copy `.env.example` to `.env` and set `VITE_FORMSPREE_ID=<your form id>`. Without it, the form opens the visitor's email client.
 - **Résumé:** drop `resume.pdf` into `public/`. The "Résumé" button appears automatically when the file exists.
+- **3D face points:** `python3 scripts/face-points.py photo.jpg > src/data/face-points.js` (needs Pillow + numpy). Only the point cloud is shipped, never the photo.
 - **Projects / skills:** edit `src/data/projects.js` and `src/data/skills.js`.
 
 ## Deploy
