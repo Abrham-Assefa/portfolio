@@ -28,4 +28,4 @@ npm run preview
 - **Projects / skills:** edit `src/data/projects.js` and `src/data/skills.js`.
 
 ## Deploy
-`vite.config.js` uses `base: './'`, so `dist/` works on GitHub Pages or any static host. Update the URL in `index.html` meta tags and `public/sitemap.xml` if the domain differs.
+Pushing to `main` builds and deploys automatically via `.github/workflows/deploy.yml` (GitHub Pages → https://abrham-assefa.github.io/portfolio/). `vite.config.js` uses `base: './'`, so `dist/` works on GitHub Pages or any static host. Update the URL in `index.html` meta tags and `public/sitemap.xml` if the domain differs.
