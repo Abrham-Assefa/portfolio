@@ -1,5 +1,4 @@
-// Starter posts shown until Supabase is connected (and seeded into the local demo admin).
-// Once the database is configured, write and publish posts from /admin.html instead.
+// Public notes are bundled with the site. Edit this list and redeploy to publish updates.
 export const STARTER_POSTS = [
   {
     id: 'starter-ai-faces',
@@ -534,3 +533,10 @@ Keep the original examples fixed across iterations. If a team only inspects fres
 Good error analysis leaves the system more observable, not merely more accurate.`
   }
 ];
+
+export function getStaticPosts(limit) {
+  const posts = STARTER_POSTS
+    .filter((post) => post.published)
+    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  return limit ? posts.slice(0, limit) : posts;
+}

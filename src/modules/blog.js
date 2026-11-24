@@ -1,8 +1,9 @@
 import { escapeHtml } from './utils.js';
-import { listPublishedPosts, readingTime } from '../lib/backend.js';
+import { getStaticPosts } from '../data/posts.js';
 import { observeReveals } from './reveal.js';
 
 export const fmtDate = (d) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+export const readingTime = (md = '') => Math.max(1, Math.round(md.split(/\s+/).filter(Boolean).length / 220));
 
 export function postCard(p, i = 0, base = './') {
   const tags = (p.tags || []).slice(0, 3).map((t) => `<span>${escapeHtml(t)}</span>`).join('');
@@ -25,14 +26,10 @@ export function postCard(p, i = 0, base = './') {
 export async function initBlog() {
   const grid = document.getElementById('blog-grid');
   if (!grid) return;
-  try {
-    const posts = await listPublishedPosts(3);
-    grid.innerHTML = posts.length
-      ? posts.map((p, i) => postCard(p, i)).join('')
-      : '<p class="blog-empty">First post coming soon.</p>';
-  } catch {
-    grid.innerHTML = '<p class="blog-empty">Posts are unavailable right now — <a href="./blog.html">open the blog</a>.</p>';
-  }
+  const posts = getStaticPosts(3);
+  grid.innerHTML = posts.length
+    ? posts.map((p, i) => postCard(p, i)).join('')
+    : '<p class="blog-empty">First post coming soon.</p>';
   grid.removeAttribute('aria-busy');
   observeReveals(grid);
 }

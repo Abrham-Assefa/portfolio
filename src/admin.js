@@ -5,8 +5,6 @@ import './styles/sections.css';
 import './styles/blog.css';
 import './styles/admin.css';
 
-import { marked } from 'marked';
-import DOMPurify from 'dompurify';
 import { $, $$, escapeHtml, toast } from './modules/utils.js';
 import { initTheme } from './modules/theme.js';
 import { initNav } from './modules/nav.js';
@@ -19,8 +17,7 @@ initTheme();
 initNav();
 
 const root = $('#admin-root');
-const md = (s) => DOMPurify.sanitize(marked.parse(s || '', { gfm: true }));
-const state = { tab: 'posts', posts: [], messages: [], msgFilter: 'all', openMsg: null };
+const state = { messages: [], msgFilter: 'all', openMsg: null };
 
 /* ---------------- login ---------------- */
 const friendlyAuthError = (msg = '') => {
@@ -48,7 +45,7 @@ function renderLogin(error = '', email = '') {
       <div class="adm-login-card glass">
         <div class="eyebrow">Admin</div>
         <h1>Welcome back.</h1>
-        <p class="adm-muted">Sign in to write posts and read messages from the contact form.</p>
+        <p class="adm-muted">Sign in to read messages from the contact form.</p>
         ${db.isConfigured ? `
         <form id="login-form" class="adm-form" novalidate>
           <label>Email<input name="email" type="email" autocomplete="username" autocapitalize="off" spellcheck="false" required value="${escapeHtml(email)}"></label>
@@ -149,7 +146,7 @@ async function boot() {
   if (!user) return renderLogin();
   root.innerHTML = '<p class="page-state">Loading dashboard…</p>';
   try {
-    [state.posts, state.messages] = await Promise.all([db.adminListPosts(), db.listMessages()]);
+    state.messages = await db.listMessages();
   } catch (err) {
     if (/session|JWT|expired/i.test(err.message)) { await db.signOut(); return renderLogin('Session expired — please sign in again.'); }
     root.innerHTML = `<div class="page-state"><h1>Couldn't load data</h1><p>${escapeHtml(err.message)}</p><button class="btn btn-ghost" id="adm-out">Sign out</button></div>`;
@@ -161,7 +158,6 @@ async function boot() {
 
 function renderShell() {
   const user = db.currentUser();
-  const published = state.posts.filter((p) => p.published).length;
   const unread = state.messages.filter((m) => !m.read).length;
   root.innerHTML = `
     <section class="adm">
@@ -179,25 +175,18 @@ function renderShell() {
         </div>
       </div>
       <div class="adm-stats">
-        <div class="adm-stat glass"><b>${state.posts.length}</b><span>Total posts</span></div>
-        <div class="adm-stat glass"><b>${published}</b><span>Published</span></div>
-        <div class="adm-stat glass"><b>${state.posts.length - published}</b><span>Drafts</span></div>
+        <div class="adm-stat glass"><b>${state.messages.length}</b><span>Total messages</span></div>
         <div class="adm-stat glass ${unread ? 'hot' : ''}"><b>${unread}</b><span>Unread messages</span></div>
-      </div>
-      <div class="adm-tabs" role="tablist">
-        <button role="tab" type="button" data-tab="posts" aria-selected="${state.tab === 'posts'}">Posts</button>
-        <button role="tab" type="button" data-tab="messages" aria-selected="${state.tab === 'messages'}">Messages ${unread ? `<i>${unread}</i>` : ''}</button>
       </div>
       <div id="adm-panel" role="tabpanel"></div>
     </section>`;
   $('#sign-out').onclick = async () => { await db.signOut(); renderLogin(); };
   $('#change-pw')?.addEventListener('click', openPasswordDialog);
-  $$('.adm-tabs [data-tab]').forEach((b) => b.addEventListener('click', () => { state.tab = b.dataset.tab; renderShell(); }));
-  state.tab === 'posts' ? renderPosts() : renderMessages();
+  renderMessages();
 }
 
 async function refresh() {
-  [state.posts, state.messages] = await Promise.all([db.adminListPosts(), db.listMessages()]);
+  state.messages = await db.listMessages();
   renderShell();
 }
 
@@ -205,128 +194,6 @@ const guard = async (fn, ok) => {
   try { await fn(); if (ok) toast(ok); await refresh(); }
   catch (err) { toast(err.message || 'Something went wrong'); }
 };
-
-/* ---------------- posts ---------------- */
-function renderPosts() {
-  const panel = $('#adm-panel');
-  panel.innerHTML = `
-    <div class="adm-bar"><h2>Posts</h2><button class="btn btn-primary" id="new-post" type="button">+ New post</button></div>
-    ${state.posts.length ? `<ul class="adm-list">${state.posts.map((p) => `
-      <li class="adm-row glass">
-        <div class="adm-row-main">
-          <span class="adm-pill ${p.published ? 'on' : ''}">${p.published ? 'Published' : 'Draft'}</span>
-          <h3>${escapeHtml(p.title)}</h3>
-          <p class="adm-muted">/${escapeHtml(p.slug)} · ${fmtDate(p.created_at)} · ${(p.tags || []).map(escapeHtml).join(', ') || 'no tags'}</p>
-        </div>
-        <div class="adm-actions">
-          ${p.published ? `<a class="adm-btn" href="./blog.html?post=${encodeURIComponent(p.slug)}" target="_blank" rel="noopener">View</a>` : ''}
-          <button class="adm-btn" data-toggle="${p.id}" type="button">${p.published ? 'Unpublish' : 'Publish'}</button>
-          <button class="adm-btn" data-edit="${p.id}" type="button">Edit</button>
-          <button class="adm-btn danger" data-del="${p.id}" type="button">Delete</button>
-        </div>
-      </li>`).join('')}</ul>` : '<p class="adm-empty">No posts yet — write your first one.</p>'}`;
-  $('#new-post').onclick = () => renderEditor();
-  panel.onclick = (e) => {
-    const t = e.target;
-    const find = (id) => state.posts.find((p) => String(p.id) === id);
-    if (t.dataset.edit) renderEditor(find(t.dataset.edit));
-    if (t.dataset.toggle) {
-      const p = find(t.dataset.toggle);
-      guard(() => db.savePost({ ...p, published: !p.published }), p.published ? 'Moved to drafts' : 'Published ✓');
-    }
-    if (t.dataset.del) {
-      const p = find(t.dataset.del);
-      if (confirm(`Delete “${p.title}”? This cannot be undone.`)) guard(() => db.deletePost(p.id), 'Post deleted');
-    }
-  };
-}
-
-function renderEditor(post = null) {
-  const p = post || { title: '', slug: '', excerpt: '', content: '', tags: [], cover_url: '', published: false };
-  let slugTouched = !!post;
-  const panel = $('#adm-panel');
-  panel.onclick = null;
-  panel.innerHTML = `
-    <form class="adm-editor" id="post-form" novalidate>
-      <div class="adm-bar">
-        <button class="adm-btn" type="button" id="ed-back">← Back to posts</button>
-        <div class="adm-actions">
-          <label class="adm-switch"><input type="checkbox" name="published" ${p.published ? 'checked' : ''}><span></span>Published</label>
-          <button class="btn btn-primary" type="submit"><span class="btn-label">${post ? 'Save changes' : 'Create post'}</span></button>
-        </div>
-      </div>
-      <div class="adm-fields glass">
-        <label class="wide">Title<input name="title" required maxlength="200" value="${escapeHtml(p.title)}" placeholder="What did you build or learn?"></label>
-        <label>Slug<input name="slug" maxlength="80" value="${escapeHtml(p.slug)}" placeholder="auto-from-title"></label>
-        <label>Tags <small>comma separated</small><input name="tags" value="${escapeHtml((p.tags || []).join(', '))}" placeholder="Computer Vision, XAI"></label>
-        <label class="wide">Excerpt <small>shown on cards</small><textarea name="excerpt" rows="2" maxlength="400">${escapeHtml(p.excerpt || '')}</textarea></label>
-        <label class="wide">Cover image URL <small>optional</small><input name="cover_url" type="url" value="${escapeHtml(p.cover_url || '')}" placeholder="https://…"></label>
-      </div>
-      <div class="adm-md">
-        <div class="adm-md-tabs" role="tablist">
-          <button type="button" data-view="write" aria-selected="true">Write</button>
-          <button type="button" data-view="preview" aria-selected="false">Preview</button>
-          <span class="adm-muted" id="ed-stats"></span>
-        </div>
-        <div class="adm-md-grid" data-view="write">
-          <textarea name="content" spellcheck="true" placeholder="Write in Markdown — ## headings, **bold**, lists, \`code\`, [links](https://…)">${escapeHtml(p.content || '')}</textarea>
-          <div class="prose adm-preview" aria-live="polite"></div>
-        </div>
-      </div>
-      <p class="adm-error" role="alert"></p>
-    </form>`;
-  const form = $('#post-form');
-  const preview = $('.adm-preview', form);
-  const stats = $('#ed-stats');
-  const update = () => {
-    preview.innerHTML = md(form.content.value) || '<p class="adm-muted">Nothing to preview yet.</p>';
-    const words = form.content.value.split(/\s+/).filter(Boolean).length;
-    stats.textContent = `${words} words · ${db.readingTime(form.content.value)} min read`;
-  };
-  update();
-  form.content.addEventListener('input', update);
-  form.title.addEventListener('input', () => { if (!slugTouched) form.slug.value = db.slugify(form.title.value); });
-  form.slug.addEventListener('input', () => { slugTouched = true; });
-  form.slug.addEventListener('blur', () => { if (form.slug.value) form.slug.value = db.slugify(form.slug.value); });
-  $$('.adm-md-tabs [data-view]', form).forEach((b) => b.addEventListener('click', () => {
-    $$('.adm-md-tabs [data-view]', form).forEach((x) => x.setAttribute('aria-selected', String(x === b)));
-    $('.adm-md-grid', form).dataset.view = b.dataset.view;
-  }));
-  $('#ed-back').onclick = () => {
-    if (form.dataset.dirty && !confirm('Discard unsaved changes?')) return;
-    renderShell();
-  };
-  form.addEventListener('input', () => { form.dataset.dirty = '1'; });
-  form.addEventListener('keydown', (e) => {
-    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 's') { e.preventDefault(); form.requestSubmit(); }
-  });
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const err = $('.adm-error', form);
-    if (!form.title.value.trim()) { err.textContent = 'Title is required.'; form.title.focus(); return; }
-    const btn = $('button[type=submit]', form);
-    btn.disabled = true;
-    try {
-      await db.savePost({
-        id: post?.id,
-        title: form.title.value,
-        slug: form.slug.value || form.title.value,
-        excerpt: form.excerpt.value,
-        content: form.content.value,
-        cover_url: form.cover_url.value,
-        tags: form.tags.value.split(',').map((t) => t.trim()).filter(Boolean),
-        published: form.published.checked
-      });
-      toast(post ? 'Saved ✓' : 'Post created ✓');
-      state.tab = 'posts';
-      await refresh();
-    } catch (ex) {
-      err.textContent = ex.message;
-      btn.disabled = false;
-    }
-  });
-  form.title.focus();
-}
 
 /* ---------------- messages ---------------- */
 function renderMessages() {

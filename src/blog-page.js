@@ -11,8 +11,8 @@ import { $, escapeHtml, toast } from './modules/utils.js';
 import { initTheme } from './modules/theme.js';
 import { initNav } from './modules/nav.js';
 import { observeReveals } from './modules/reveal.js';
-import { postCard, fmtDate } from './modules/blog.js';
-import { listPublishedPosts, readingTime } from './lib/backend.js';
+import { postCard, fmtDate, readingTime } from './modules/blog.js';
+import { getStaticPosts } from './data/posts.js';
 
 const yearEl = $('#year');
 if (yearEl) yearEl.textContent = new Date().getFullYear();
@@ -137,14 +137,8 @@ addEventListener('scroll', () => {
   progress.style.setProperty('--rp', p.toFixed(3));
 }, { passive: true });
 
-(async () => {
-  try {
-    posts = await listPublishedPosts();
-  } catch {
-    list.innerHTML = '<p class="blog-empty">Couldn\'t load posts right now. Please try again later.</p>';
-    list.removeAttribute('aria-busy');
-    return;
-  }
+(() => {
+  posts = getStaticPosts();
   list.removeAttribute('aria-busy');
   renderChips();
   route();

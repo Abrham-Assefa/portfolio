@@ -1,22 +1,14 @@
-// Tiny data layer for the blog + admin.
+// Tiny data layer for admin authentication and the contact inbox.
 // With VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY set it talks to Supabase (REST + Auth)
 // using plain fetch, so no SDK is shipped. Without them it falls back to a browser-local
-// demo store so the blog and admin still work for previewing.
-import { STARTER_POSTS } from '../data/posts.js';
+// demo store so the contact inbox still works for previewing.
 
 const URL_ = (import.meta.env.VITE_SUPABASE_URL || '').trim().replace(/\/$/, '');
 const KEY = (import.meta.env.VITE_SUPABASE_ANON_KEY || '').trim();
 export const isConfigured = Boolean(URL_ && KEY);
 
 const SESSION_KEY = 'aa-admin-session';
-const LOCAL_POSTS = 'aa-local-posts';
 const LOCAL_MSGS = 'aa-local-messages';
-
-export const slugify = (s) =>
-  String(s).toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80) || 'post';
-
-export const readingTime = (md = '') => Math.max(1, Math.round(md.split(/\s+/).filter(Boolean).length / 220));
 
 /* ---------------- session ---------------- */
 function getSession() {
@@ -113,66 +105,9 @@ const readLocal = (k, fallback) => {
   try { const v = JSON.parse(localStorage.getItem(k)); return Array.isArray(v) ? v : fallback; } catch { return fallback; }
 };
 const writeLocal = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
-const localPosts = () => readLocal(LOCAL_POSTS, STARTER_POSTS.map((p) => ({ ...p })));
 const byDate = (a, b) => new Date(b.created_at) - new Date(a.created_at);
 const uid = () => (crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()));
 const isLocalSession = () => !!getSession()?.local;
-
-/* ---------------- posts ---------------- */
-const POST_COLS = 'id,slug,title,excerpt,content,cover_url,tags,published,created_at,updated_at';
-
-export async function listPublishedPosts(limit) {
-  if (!isConfigured) {
-    const posts = localPosts().filter((p) => p.published).sort(byDate);
-    return limit ? posts.slice(0, limit) : posts;
-  }
-  const q = `posts?select=${POST_COLS}&published=eq.true&order=created_at.desc${limit ? `&limit=${limit}` : ''}`;
-  return rest(q);
-}
-
-export async function getPost(slug) {
-  if (!isConfigured) return localPosts().find((p) => p.slug === slug && p.published) || null;
-  const rows = await rest(`posts?select=${POST_COLS}&slug=eq.${encodeURIComponent(slug)}&published=eq.true&limit=1`);
-  return rows?.[0] || null;
-}
-
-export async function adminListPosts() {
-  if (!isConfigured || isLocalSession()) return localPosts().sort(byDate);
-  return rest(`posts?select=${POST_COLS}&order=created_at.desc`, { auth: true });
-}
-
-export async function savePost(post) {
-  const now = new Date().toISOString();
-  const data = {
-    slug: slugify(post.slug || post.title),
-    title: post.title.trim(),
-    excerpt: (post.excerpt || '').trim(),
-    content: post.content || '',
-    cover_url: (post.cover_url || '').trim() || null,
-    tags: post.tags || [],
-    published: !!post.published,
-    updated_at: now
-  };
-  if (!isConfigured || isLocalSession()) {
-    const all = localPosts();
-    if (all.some((p) => p.slug === data.slug && p.id !== post.id)) throw new Error('Another post already uses this slug.');
-    if (post.id) {
-      const i = all.findIndex((p) => p.id === post.id);
-      all[i] = { ...all[i], ...data };
-    } else {
-      all.push({ ...data, id: uid(), created_at: now });
-    }
-    writeLocal(LOCAL_POSTS, all);
-    return;
-  }
-  if (post.id) await rest(`posts?id=eq.${post.id}`, { method: 'PATCH', body: data, auth: true, prefer: 'return=minimal' });
-  else await rest('posts', { method: 'POST', body: data, auth: true, prefer: 'return=minimal' });
-}
-
-export async function deletePost(id) {
-  if (!isConfigured || isLocalSession()) return writeLocal(LOCAL_POSTS, localPosts().filter((p) => p.id !== id));
-  await rest(`posts?id=eq.${id}`, { method: 'DELETE', auth: true });
-}
 
 /* ---------------- messages ---------------- */
 // Returns true when stored in the database (so the caller can skip other fallbacks).
